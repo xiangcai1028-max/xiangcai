@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trade & Earn Dashboard</title>
+  <title>成交激励数据看板</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -347,87 +347,87 @@
 <body>
   <div class="app">
     <aside class="sidebar">
-      <div class="side-item"><span class="side-icon">▣</span>System Management</div>
-      <div class="side-item"><span class="side-icon">▤</span>Business Management</div>
-      <div class="side-item"><span class="side-icon">●</span>Finance Management</div>
-      <div class="side-item"><span class="side-icon">▧</span>Marketing Management</div>
-      <div class="side-item"><span class="side-icon">▤</span>App Management</div>
+      <div class="side-item"><span class="side-icon">▣</span>系统管理</div>
+      <div class="side-item"><span class="side-icon">▤</span>业务管理</div>
+      <div class="side-item"><span class="side-icon">●</span>财务管理</div>
+      <div class="side-item"><span class="side-icon">▧</span>营销管理</div>
+      <div class="side-item"><span class="side-icon">▤</span>App管理</div>
       <div class="side-group active">
-        <div class="side-item"><span class="side-icon">▥</span>Data Analytics</div>
-        <div class="side-sub">Markup Coupon Data</div>
-        <div class="side-sub">Check-in Data</div>
-        <div class="side-sub">Lucky Draw Data</div>
-        <div class="side-sub">Order Data</div>
-        <div class="side-sub">New User Data</div>
-        <div class="side-sub active">Trade & Earn Data</div>
-        <div class="side-sub">Market Overview</div>
-        <div class="side-sub">Referral Data</div>
+        <div class="side-item"><span class="side-icon">▥</span>数据分析</div>
+        <div class="side-sub">加价券数据</div>
+        <div class="side-sub">签到数据</div>
+        <div class="side-sub">抽奖数据</div>
+        <div class="side-sub">订单数据</div>
+        <div class="side-sub">新用户数据</div>
+        <div class="side-sub active">Trade & Earn 数据</div>
+        <div class="side-sub">大盘数据</div>
+        <div class="side-sub">裂变数据</div>
       </div>
-      <div class="side-item"><span class="side-icon">♟</span>User Analytics</div>
-      <div class="side-item"><span class="side-icon">♟</span>Event Management</div>
-      <div class="side-item"><span class="side-icon">▣</span>Member Management</div>
+      <div class="side-item"><span class="side-icon">♟</span>用户分析</div>
+      <div class="side-item"><span class="side-icon">♟</span>赛事管理</div>
+      <div class="side-item"><span class="side-icon">▣</span>会员管理</div>
     </aside>
 
     <main class="main">
       <header class="topbar">
-        <div class="page-title">Trade & Earn Dashboard</div>
+        <div class="page-title">成交激励数据看板</div>
         <div class="top-actions">
-          <div class="lang">English⌄</div>
-          <span>Admin</span>
+          <div class="lang">简体中文⌄</div>
+          <span>香菜</span>
           <span class="avatar"></span>
         </div>
       </header>
 
       <div class="content">
         <section class="panel">
-          <div class="section-label">Metric Notes<span class="info">i</span></div>
+          <div class="section-label">指标说明<span class="info">i</span></div>
           <div class="filters">
-            <div class="filter"><span>Site:</span><select><option>CG</option><option>CS</option></select></div>
-            <div class="filter"><span>Campaign:</span><select><option>TE-2026-001｜2026-03-01 to 2026-06-01</option><option>TE-2026-002｜2026-06-02 to 2026-08-31</option></select></div>
-            <div class="filter"><span>Period:</span><select class="period"><option>All</option><option>P7｜2026-04-05 to 2026-04-11（In Progress, data as of 2026-04-08 00:00）</option><option>P6｜2026-04-01 to 2026-04-04（Settled）</option><option>P5｜2026-03-29 to 2026-03-31（Settled）</option><option>P4｜2026-03-22 to 2026-03-28（Settled）</option><option>P3｜2026-03-15 to 2026-03-21（Settled）</option><option>P2｜2026-03-08 to 2026-03-14（Settled）</option><option>P1｜2026-03-01 to 2026-03-07（Settled）</option></select></div>
-            <div class="filter"><span>Platform:</span><select><option>All Platforms</option><option>iOS</option><option>Android</option></select></div>
-            <div class="filter-tip">Settled periods are official snapshots for review. In-progress periods are interim snapshots updated on a fixed schedule, used to filter near-threshold users and send email reminders, not as the final settlement basis. Selecting “All” aggregates all <code>reward_period</code> snapshots under the current campaign.</div>
-            <button class="btn">Search</button>
-            <button class="btn secondary">Reset</button>
+            <div class="filter"><span>站点：</span><select><option>CG</option><option>CS</option></select></div>
+            <div class="filter"><span>活动期次：</span><select><option>TE-2026-001｜2026-03-01 至 2026-06-01</option><option>TE-2026-002｜2026-06-02 至 2026-08-31</option></select></div>
+            <div class="filter"><span>统计周期：</span><select class="period"><option>全部</option><option>P7｜2026-04-05 至 2026-04-11（进行中，数据截至 2026-04-08 00:00）</option><option>P6｜2026-04-01 至 2026-04-04（已结算）</option><option>P5｜2026-03-29 至 2026-03-31（已结算）</option><option>P4｜2026-03-22 至 2026-03-28（已结算）</option><option>P3｜2026-03-15 至 2026-03-21（已结算）</option><option>P2｜2026-03-08 至 2026-03-14（已结算）</option><option>P1｜2026-03-01 至 2026-03-07（已结算）</option></select></div>
+            <div class="filter"><span>平台：</span><select><option>全部平台</option><option>iOS</option><option>Android</option></select></div>
+            <div class="filter-tip">已结算周期为正式快照，可用于复盘；进行中周期为临时快照，按固定时间更新，可用于筛选即将达标用户并邮件提醒，不作为最终结算口径。选择“全部”时汇总当前活动期次下全部 <code>reward_period</code> 快照。</div>
+            <button class="btn">搜索</button>
+            <button class="btn secondary">重置</button>
           </div>
 
           <div class="tabs">
-            <button class="tab active" data-page="overview">Overview</button>
-            <button class="tab" data-page="details">User Details</button>
+            <button class="tab active" data-page="overview">总览</button>
+            <button class="tab" data-page="details">用户明细</button>
           </div>
 
           <section class="tab-page active" id="overview">
             <div class="metrics">
-              <div class="metric"><div class="label">Page Visit Users</div><div class="value">24,680</div><div class="hint">GA · filtered by campaign_id</div></div>
-              <div class="metric"><div class="label">Participating Users</div><div class="value blue">5,612</div><div class="hint">Visited and completed valid transactions</div></div>
-              <div class="metric"><div class="label">Qualified Users</div><div class="value green">2,042</div><div class="hint">Only users qualified for rewards</div><div class="breakdown"><span>Single Reward Qualified: 1,248</span><span>Cumulative Reward Qualified: 312</span><span>Streak Reward Qualified: 482</span></div></div>
-              <div class="metric"><div class="label">Successful Claim Users</div><div class="value green">1,936</div><div class="hint">Successful payout in database</div></div>
-              <div class="metric"><div class="label">Expired Reward Users</div><div class="value red">38</div><div class="hint">Expired after qualification without claim</div></div>
-              <div class="metric"><div class="label">Participation Rate</div><div class="value blue">22.74%</div><div class="hint">Participating / Page Visits</div></div>
-              <div class="metric"><div class="label">Qualification Rate</div><div class="value green">36.39%</div><div class="hint">Qualified / Participating</div></div>
-              <div class="metric"><div class="label">Claim Success Rate</div><div class="value green">94.81%</div><div class="hint">Successful Claims / Qualified</div></div>
-              <div class="metric"><div class="label">Reward Payout Amount</div><div class="value">₦ 9.68M</div><div class="hint">Only successful payouts, all amounts converted to NGN</div><div class="breakdown"><span>coins：₦ 1.28M</span><span>coupons：₦ 0.86M</span><span>cash：₦ 3.20M</span></div></div>
-              <div class="metric"><div class="label">Qualified User GMV</div><div class="value">₦ 286.42M</div><div class="hint">Valid transaction amount</div></div>
-              <div class="metric"><div class="label">ROI</div><div class="value blue">29.59x</div><div class="hint">GMV / Reward Cost</div></div>
+              <div class="metric"><div class="label">页面访问用户数</div><div class="value">24,680</div><div class="hint">GA · 按 campaign_id 筛选</div></div>
+              <div class="metric"><div class="label">参与活动用户数</div><div class="value blue">5,612</div><div class="hint">访问后完成有效交易</div></div>
+              <div class="metric"><div class="label">达标用户数</div><div class="value green">2,042</div><div class="hint">仅统计奖励达标人数</div><div class="breakdown"><span>单次奖励达标：1,248</span><span>累计奖励达标：312</span><span>连续奖励达标：482</span></div></div>
+              <div class="metric"><div class="label">领取成功用户数</div><div class="value green">1,936</div><div class="hint">数据库到账成功</div></div>
+              <div class="metric"><div class="label">奖励过期用户数</div><div class="value red">38</div><div class="hint">达标后过期未领取</div></div>
+              <div class="metric"><div class="label">参与率</div><div class="value blue">22.74%</div><div class="hint">参与 / 页面访问</div></div>
+              <div class="metric"><div class="label">达标率</div><div class="value green">36.39%</div><div class="hint">达标 / 参与</div></div>
+              <div class="metric"><div class="label">领取率</div><div class="value green">94.81%</div><div class="hint">领取成功 / 达标</div></div>
+              <div class="metric"><div class="label">奖励发放金额</div><div class="value">₦ 9.68M</div><div class="hint">仅统计到账成功，单位均为奈拉</div><div class="breakdown"><span>coins：₦ 1.28M</span><span>coupons：₦ 0.86M</span><span>cash：₦ 3.20M</span></div></div>
+              <div class="metric"><div class="label">达标用户 GMV</div><div class="value">₦ 286.42M</div><div class="hint">有效交易金额</div></div>
+              <div class="metric"><div class="label">ROI</div><div class="value blue">29.59x</div><div class="hint">GMV / 奖励成本</div></div>
             </div>
             <div class="source-note">
-              <div class="source-title">Data Source Notes</div>
-              <div>Page visits: CS uses <code>reward_page_view_eventpage</code>, CG uses <code>reward_page_view</code></div>
-              <div>Participation, qualification, payout, expiration, GMV, and ROI are based on database results</div>
+              <div class="source-title">数据来源说明</div>
+              <div>页面访问：CS <code>reward_page_view_eventpage</code>，CG <code>reward_page_view</code></div>
+              <div>参与、达标、奖励到账、过期、GMV、ROI 均以数据库结果为准</div>
             </div>
             <div class="source-note">
-              <div class="source-title">Configuration Rules</div>
-              <div>Thresholds, game types, streak/cumulative counts, reward content, and missed-claim validity are read from the current <code>campaign_id</code> configuration</div>
-              <div>CG: single / streak / cumulative. CS: single / cumulative. Actual game types follow campaign configuration</div>
-              <div>Periods are generated by <code>site + campaign_id</code>. Split-week sites are recalculated by period segment; regular sites use full natural weeks</div>
+              <div class="source-title">配置读取原则</div>
+              <div>门槛、玩法、连续/累计次数、奖励内容、漏签时效均读取当前 <code>campaign_id</code> 配置</div>
+              <div>CG：单次 / 连续 / 累计；CS：单次 / 累计，实际玩法以活动配置为准</div>
+              <div>统计周期由 <code>site + campaign_id</code> 生成；切割周站点按周期片段重算，普通站点按完整自然周</div>
             </div>
             <div class="grid-2">
               <div class="box">
-                <div class="box-head"><span>Core Metric Trends</span><span class="muted">Settled periods are official snapshots; in-progress periods are interim snapshots</span></div>
+                <div class="box-head"><span>核心指标趋势</span><span class="muted">已结算周期为正式快照，进行中周期为临时快照</span></div>
                 <div class="legend">
-                  <span><i class="dot" style="background:#5b8ff9"></i>Page Visit Trend</span>
-                  <span><i class="dot" style="background:#61d9a0"></i>Participating User Trend</span>
-                  <span><i class="dot" style="background:#f6bd16"></i>Qualified User Trend</span>
+                  <span><i class="dot" style="background:#5b8ff9"></i>页面访问趋势</span>
+                  <span><i class="dot" style="background:#61d9a0"></i>参与用户趋势</span>
+                  <span><i class="dot" style="background:#f6bd16"></i>达标用户趋势</span>
                 </div>
                 <div class="chart-wrap">
                   <svg width="100%" height="300" viewBox="0 0 840 300">
@@ -453,38 +453,38 @@
 
           <section class="tab-page" id="details">
             <div class="detail-filters">
-              <div class="filter"><span>Reward Status:</span><select><option>All</option><option>Not Qualified</option><option>Unclaimed</option><option>Claim Successful</option><option>Expired</option></select></div>
-              <div class="filter"><span>Gap to Threshold:</span><select><option>All</option><option>₦0-5,000</option><option>₦5,000-10,000</option><option>₦10,000-20,000</option><option>₦20,000+</option></select></div>
-              <div class="filter"><span>Qualification Progress:</span><select><option>All</option><option>0%-20%</option><option>20%-50%</option><option>50%-80%</option><option>80%-99%</option><option>≥100%</option></select></div>
-              <div class="filter"><span>User ID:</span><input value="" placeholder="Enter User ID" /></div>
-              <button class="btn">Query</button>
-              <button class="btn secondary">Reset</button>
+              <div class="filter"><span>奖励状态：</span><select><option>全部</option><option>未达标</option><option>未领取</option><option>领取成功</option><option>已过期</option></select></div>
+              <div class="filter"><span>距离达标差额：</span><select><option>全部</option><option>₦0-5,000</option><option>₦5,000-10,000</option><option>₦10,000-20,000</option><option>₦20,000+</option></select></div>
+              <div class="filter"><span>达标进度：</span><select><option>全部</option><option>0%-20%</option><option>20%-50%</option><option>50%-80%</option><option>80%-99%</option><option>≥100%</option></select></div>
+              <div class="filter"><span>用户 ID：</span><input value="" placeholder="请输入用户 ID" /></div>
+              <button class="btn">查询</button>
+              <button class="btn secondary">重置</button>
             </div>
             <div class="table-tools">
-              <span class="muted">8,426 user records</span>
-              <button class="btn outline">Export</button>
+              <span class="muted">共 8,426 条用户记录</span>
+              <button class="btn outline">导出</button>
             </div>
             <table>
               <thead>
-                <tr><th>Site</th><th>campaign_id</th><th>Statistical Period</th><th>user_id</th><th>Platform</th><th>Trade Threshold</th><th>Current Trade GMV</th><th>Gap to Threshold</th><th>Qualification Progress</th><th>Reward Status</th><th>Claimed Reward Count</th><th>Single Reward Count</th><th>Streak Reward Count</th><th>Cumulative Reward Count</th><th>Data Updated At</th></tr>
+                <tr><th>站点</th><th>campaign_id</th><th>统计周期</th><th>user_id</th><th>平台</th><th>交易门槛</th><th>当前交易 GMV</th><th>距离达标差额</th><th>达标进度</th><th>奖励状态</th><th>已领取奖励次数</th><th>单次奖励次数</th><th>连续奖励次数</th><th>累计奖励次数</th><th>数据更新时间</th></tr>
               </thead>
               <tbody>
-                <tr><td>CG</td><td>TE-2026-001</td><td>P1<br/>03-01 to 03-07</td><td>10582941</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 128,600.00</td><td>₦ 0.00</td><td>128.60%</td><td><span class="status success">Claim Successful</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2026-03-08 00:00</td></tr>
-                <tr><td>CG</td><td>TE-2026-001</td><td>P2<br/>03-08 to 03-14</td><td>10840272</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 96,430.00</td><td>₦ 3,570.00</td><td>96.43%</td><td><span class="status warn">Not Qualified</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-03-15 00:00</td></tr>
-                <tr><td>CG</td><td>TE-2026-001</td><td>P3<br/>03-15 to 03-21</td><td>10277416</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 100,250.00</td><td>₦ 0.00</td><td>100.25%</td><td><span class="status pending">Unclaimed</span></td><td>0</td><td>1</td><td>0</td><td>0</td><td>2026-03-22 00:00</td></tr>
-                <tr><td>CG</td><td>TE-2026-001</td><td>P4<br/>03-22 to 03-28</td><td>10723598</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 43,760.00</td><td>₦ 56,240.00</td><td>43.76%</td><td><span class="status warn">Not Qualified</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-03-29 00:00</td></tr>
-                <tr><td>CG</td><td>TE-2026-001</td><td>P5<br/>03-29 to 03-31</td><td>10958314</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 112,900.00</td><td>₦ 0.00</td><td>112.90%</td><td><span class="status pending">Unclaimed</span></td><td>0</td><td>1</td><td>0</td><td>1</td><td>2026-04-01 00:00</td></tr>
-                <tr><td>CG</td><td>TE-2026-001</td><td>P6<br/>04-01 to 04-04</td><td>10122673</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 84,510.00</td><td>₦ 15,490.00</td><td>84.51%</td><td><span class="status warn">Not Qualified</span></td><td>0</td><td>0</td><td>1</td><td>0</td><td>2026-04-05 00:00</td></tr>
-                <tr><td>CS</td><td>TE-2026-001</td><td>P1<br/>03-01 to 03-07</td><td>10631844</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 135,000.00</td><td>₦ 0.00</td><td>135.00%</td><td><span class="status success">Claim Successful</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2026-03-08 00:00</td></tr>
-                <tr><td>CS</td><td>TE-2026-001</td><td>P2<br/>03-08 to 03-14</td><td>10498125</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 18,600.00</td><td>₦ 81,400.00</td><td>18.60%</td><td><span class="status warn">Not Qualified</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-03-15 00:00</td></tr>
-                <tr><td>CS</td><td>TE-2026-001</td><td>P3<br/>03-15 to 03-21</td><td>10364082</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 152,300.00</td><td>₦ 0.00</td><td>152.30%</td><td><span class="status error">Expired</span></td><td>0</td><td>1</td><td>0</td><td>1</td><td>2026-03-22 00:00</td></tr>
-                <tr><td>CS</td><td>TE-2026-001</td><td>P4<br/>03-22 to 03-28</td><td>10087431</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 101,880.00</td><td>₦ 0.00</td><td>101.88%</td><td><span class="status success">Claim Successful</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2026-03-29 00:00</td></tr>
-                <tr><td>CS</td><td>TE-2026-001</td><td>P5<br/>03-29 to 03-31</td><td>10977120</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 61,240.00</td><td>₦ 38,760.00</td><td>61.24%</td><td><span class="status warn">Not Qualified</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-04-01 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P1<br/>03-01 至 03-07</td><td>10582941</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 128,600.00</td><td>₦ 0.00</td><td>128.60%</td><td><span class="status success">领取成功</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2026-03-08 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P2<br/>03-08 至 03-14</td><td>10840272</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 96,430.00</td><td>₦ 3,570.00</td><td>96.43%</td><td><span class="status warn">未达标</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-03-15 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P3<br/>03-15 至 03-21</td><td>10277416</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 100,250.00</td><td>₦ 0.00</td><td>100.25%</td><td><span class="status pending">未领取</span></td><td>0</td><td>1</td><td>0</td><td>0</td><td>2026-03-22 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P4<br/>03-22 至 03-28</td><td>10723598</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 43,760.00</td><td>₦ 56,240.00</td><td>43.76%</td><td><span class="status warn">未达标</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-03-29 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P5<br/>03-29 至 03-31</td><td>10958314</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 112,900.00</td><td>₦ 0.00</td><td>112.90%</td><td><span class="status pending">未领取</span></td><td>0</td><td>1</td><td>0</td><td>1</td><td>2026-04-01 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P6<br/>04-01 至 04-04</td><td>10122673</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 84,510.00</td><td>₦ 15,490.00</td><td>84.51%</td><td><span class="status warn">未达标</span></td><td>0</td><td>0</td><td>1</td><td>0</td><td>2026-04-05 00:00</td></tr>
+                <tr><td>CS</td><td>TE-2026-001</td><td>P1<br/>03-01 至 03-07</td><td>10631844</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 135,000.00</td><td>₦ 0.00</td><td>135.00%</td><td><span class="status success">领取成功</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2026-03-08 00:00</td></tr>
+                <tr><td>CS</td><td>TE-2026-001</td><td>P2<br/>03-08 至 03-14</td><td>10498125</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 18,600.00</td><td>₦ 81,400.00</td><td>18.60%</td><td><span class="status warn">未达标</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-03-15 00:00</td></tr>
+                <tr><td>CS</td><td>TE-2026-001</td><td>P3<br/>03-15 至 03-21</td><td>10364082</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 152,300.00</td><td>₦ 0.00</td><td>152.30%</td><td><span class="status error">已过期</span></td><td>0</td><td>1</td><td>0</td><td>1</td><td>2026-03-22 00:00</td></tr>
+                <tr><td>CS</td><td>TE-2026-001</td><td>P4<br/>03-22 至 03-28</td><td>10087431</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 101,880.00</td><td>₦ 0.00</td><td>101.88%</td><td><span class="status success">领取成功</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2026-03-29 00:00</td></tr>
+                <tr><td>CS</td><td>TE-2026-001</td><td>P5<br/>03-29 至 03-31</td><td>10977120</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 61,240.00</td><td>₦ 38,760.00</td><td>61.24%</td><td><span class="status warn">未达标</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-04-01 00:00</td></tr>
               </tbody>
             </table>
             <div class="pagination"><span class="page-num">‹</span><span class="page-num active">1</span><span class="page-num">2</span><span class="page-num">3</span><span class="page-num">…</span><span class="page-num">42</span><span class="page-num">›</span></div>
           </section>
-          <div class="updated">Global filters: Site → Campaign → Period → Platform. In-progress period data is as of 2026-04-08 00:00 and is only for operational reminders. Settled periods are the final review basis | Data updated at: 2026-04-08 00:00:00</div>
+          <div class="updated">公共筛选：站点 → 活动期次 → 统计周期 → 平台；进行中周期数据截至 2026-04-08 00:00，仅用于运营提醒；已结算周期为最终复盘口径｜数据更新时间：2026-04-08 00:00:00</div>
         </section>
       </div>
     </main>
