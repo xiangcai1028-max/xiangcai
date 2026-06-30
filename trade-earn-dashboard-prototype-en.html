@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trade & Earn Dashboard</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 1440px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", Arial, sans-serif;
+      color: #303133;
+      background: #f3f5fa;
+      font-size: 15px;
+    }
+    button, input, select { font: inherit; }
+    .app { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 248px;
+      flex-shrink: 0;
+      background: #1c1f24;
+      color: #e6e8ed;
+      padding: 18px 0 24px;
+    }
+    .side-item, .side-sub {
+      display: flex;
+      align-items: center;
+      height: 54px;
+    }
+    .side-item {
+      gap: 14px;
+      padding: 0 24px;
+      font-size: 18px;
+    }
+    .side-icon {
+      width: 16px;
+      color: #168fff;
+      font-size: 17px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .side-group.active > .side-item { color: #168fff; }
+    .side-sub {
+      padding-left: 50px;
+      font-size: 16px;
+      color: #f0f1f5;
+    }
+    .side-sub.active {
+      color: #168fff;
+      background: #2a3048;
+    }
+    .main { flex: 1; min-width: 0; }
+    .topbar {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px 0 24px;
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,.04);
+    }
+    .page-title {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 70px;
+      font-size: 23px;
+      font-weight: 700;
+    }
+    .page-title::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 112px;
+      height: 5px;
+      background: #57adfa;
+    }
+    .top-actions { display: flex; align-items: center; gap: 24px; font-size: 16px; }
+    .lang {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 38px;
+      padding: 0 14px;
+      color: #303133;
+      border: 1px solid #dcdfe6;
+      border-radius: 3px;
+      background: #fff;
+    }
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #efc39e 0 42%, #315086 43%);
+    }
+    .content { padding: 24px; }
+    .panel {
+      min-height: calc(100vh - 118px);
+      padding: 24px 24px 30px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.02);
+    }
+    .section-label {
+      margin-bottom: 16px;
+      color: #606266;
+      font-size: 15px;
+    }
+    .section-label .info {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      margin-left: 4px;
+      border-radius: 50%;
+      color: #fff;
+      background: #74777c;
+      font-size: 11px;
+    }
+    .filters {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #ebeef5;
+    }
+    .filter { display: flex; align-items: center; gap: 8px; color: #606266; }
+    select, input {
+      height: 38px;
+      padding: 0 12px;
+      color: #606266;
+      border: 1px solid #dcdfe6;
+      border-radius: 3px;
+      outline: none;
+      background: #fff;
+    }
+    select { min-width: 146px; }
+    .date { width: 260px; }
+    .filter-tip {
+      flex-basis: 100%;
+      margin: -2px 0 0 70px;
+      color: #909399;
+      font-size: 12px;
+    }
+    .btn {
+      height: 38px;
+      padding: 0 20px;
+      color: #fff;
+      border: 1px solid #168fff;
+      border-radius: 3px;
+      background: #168fff;
+      cursor: pointer;
+    }
+    .btn.secondary { color: #606266; border-color: #606266; background: #fff; }
+    .btn.outline { color: #168fff; border-color: #168fff; background: #fff; }
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .tab {
+      height: 38px;
+      padding: 0 20px;
+      border: 1px solid #c9cdd4;
+      border-radius: 3px;
+      color: #303133;
+      background: #fff;
+      cursor: pointer;
+    }
+    .tab.active { color: #fff; border-color: #168fff; background: #168fff; }
+    .tab-page { display: none; }
+    .tab-page.active { display: block; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .metric {
+      padding: 15px 16px;
+      border: 1px solid #ebeef5;
+      border-radius: 4px;
+      background: #fff;
+    }
+    .metric .label { margin-bottom: 10px; color: #909399; font-size: 14px; }
+    .metric .value { color: #303133; font-size: 24px; font-weight: 700; }
+    .metric .value.blue { color: #168fff; }
+    .metric .value.green { color: #079455; }
+    .metric .value.red { color: #d92d20; }
+    .metric .hint { margin-top: 7px; color: #b0b4bc; font-size: 12px; }
+    .metric .breakdown {
+      display: grid;
+      gap: 4px;
+      margin-top: 8px;
+      color: #909399;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .source-note {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr 1fr;
+      gap: 0;
+      margin: 0 0 18px;
+      border: 1px solid #ebeef5;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .source-note div {
+      min-height: 42px;
+      padding: 10px 12px;
+      border-right: 1px solid #ebeef5;
+      color: #606266;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .source-note div:last-child { border-right: 0; }
+    .source-note .source-title {
+      color: #303133;
+      font-weight: 700;
+      background: #f5f7fa;
+    }
+    .source-note code {
+      padding: 1px 4px;
+      color: #303133;
+      background: #f3f5fa;
+      border: 1px solid #e4e7ed;
+      border-radius: 3px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .box {
+      border: 1px solid #ebeef5;
+      border-radius: 4px;
+      background: #fff;
+    }
+    .box-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 8px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .muted { color: #909399; font-size: 13px; font-weight: 400; }
+    .chart-wrap { padding: 8px 16px 14px; }
+    svg text { fill: #909399; font-size: 12px; }
+    .legend { display: flex; gap: 18px; margin: 0 0 10px 34px; color: #606266; font-size: 13px; }
+    .dot { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; }
+    .funnel-layout { display: grid; grid-template-columns: 1.55fr .65fr; gap: 16px; }
+    .segments {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 30px 28px;
+    }
+    .funnel-step {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 76px;
+      color: #fff;
+      clip-path: polygon(5% 0, 95% 0, 88% 100%, 12% 100%);
+    }
+    .funnel-step + .funnel-step { margin-top: 7px; }
+    .funnel-step .big { margin-right: 12px; font-size: 22px; font-weight: 700; }
+    .funnel-step .small { font-size: 13px; opacity: .9; }
+    .step1 { width: 100%; background: #4fa9ff; }
+    .step2 { width: 87%; background: #419df4; }
+    .step3 { width: 71%; background: #338fe9; }
+    .step4 { width: 57%; background: #237fd8; }
+    .step5 { width: 48%; background: #1471c7; }
+    .funnel-stats { padding: 8px 16px 14px; }
+    .stat-line {
+      display: grid;
+      grid-template-columns: 1fr 72px 72px;
+      gap: 8px;
+      padding: 13px 0;
+      border-bottom: 1px solid #ebeef5;
+      color: #606266;
+    }
+    .stat-line.head { color: #909399; font-size: 12px; }
+    .stat-line:last-child { border-bottom: 0; }
+    .detail-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 14px;
+      margin: 4px 0 14px;
+      padding: 14px;
+      background: #fafbfc;
+      border: 1px solid #ebeef5;
+      border-radius: 4px;
+    }
+    .table-tools {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td {
+      padding: 11px 9px;
+      text-align: left;
+      border: 1px solid #ebeef5;
+      white-space: nowrap;
+    }
+    th { color: #606266; background: #f5f7fa; font-weight: 600; }
+    td { color: #606266; }
+    .status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+    .success { color: #067647; background: #e8f7ef; }
+    .warn { color: #8a4b00; background: #fff4df; }
+    .error { color: #b42318; background: #fee4e2; }
+    .pending { color: #175cd3; background: #eaf2ff; }
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px;
+      color: #606266;
+      font-size: 13px;
+    }
+    .page-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid #dcdfe6;
+      border-radius: 3px;
+    }
+    .page-num.active { color: #fff; border-color: #168fff; background: #168fff; }
+    .updated { margin-top: 16px; color: #909399; font-size: 12px; text-align: right; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="side-item"><span class="side-icon">▣</span>System Management</div>
+      <div class="side-item"><span class="side-icon">▤</span>Business Management</div>
+      <div class="side-item"><span class="side-icon">●</span>Finance Management</div>
+      <div class="side-item"><span class="side-icon">▧</span>Marketing Management</div>
+      <div class="side-item"><span class="side-icon">▤</span>App Management</div>
+      <div class="side-group active">
+        <div class="side-item"><span class="side-icon">▥</span>Data Analytics</div>
+        <div class="side-sub">Markup Coupon Data</div>
+        <div class="side-sub">Check-in Data</div>
+        <div class="side-sub">Lucky Draw Data</div>
+        <div class="side-sub">Order Data</div>
+        <div class="side-sub">New User Data</div>
+        <div class="side-sub active">Trade & Earn Data</div>
+        <div class="side-sub">Market Overview</div>
+        <div class="side-sub">Referral Data</div>
+      </div>
+      <div class="side-item"><span class="side-icon">♟</span>User Analytics</div>
+      <div class="side-item"><span class="side-icon">♟</span>Event Management</div>
+      <div class="side-item"><span class="side-icon">▣</span>Member Management</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="page-title">Trade & Earn Dashboard</div>
+        <div class="top-actions">
+          <div class="lang">English⌄</div>
+          <span>Admin</span>
+          <span class="avatar"></span>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="panel">
+          <div class="section-label">Metric Notes<span class="info">i</span></div>
+          <div class="filters">
+            <div class="filter"><span>Site:</span><select><option>CG</option><option>CS</option></select></div>
+            <div class="filter"><span>Campaign:</span><select><option>TE-2026-001｜2026-03-01 to 2026-06-01</option><option>TE-2026-002｜2026-06-02 to 2026-08-31</option></select></div>
+            <div class="filter"><span>Period:</span><select class="period"><option>All</option><option>P7｜2026-04-05 to 2026-04-11（In Progress, data as of 2026-04-08 00:00）</option><option>P6｜2026-04-01 to 2026-04-04（Settled）</option><option>P5｜2026-03-29 to 2026-03-31（Settled）</option><option>P4｜2026-03-22 to 2026-03-28（Settled）</option><option>P3｜2026-03-15 to 2026-03-21（Settled）</option><option>P2｜2026-03-08 to 2026-03-14（Settled）</option><option>P1｜2026-03-01 to 2026-03-07（Settled）</option></select></div>
+            <div class="filter"><span>Platform:</span><select><option>All Platforms</option><option>iOS</option><option>Android</option></select></div>
+            <div class="filter-tip">Settled periods are official snapshots for review. In-progress periods are interim snapshots updated on a fixed schedule, used to filter near-threshold users and send email reminders, not as the final settlement basis. Selecting “All” aggregates all <code>reward_period</code> snapshots under the current campaign.</div>
+            <button class="btn">Search</button>
+            <button class="btn secondary">Reset</button>
+          </div>
+
+          <div class="tabs">
+            <button class="tab active" data-page="overview">Overview</button>
+            <button class="tab" data-page="details">User Details</button>
+          </div>
+
+          <section class="tab-page active" id="overview">
+            <div class="metrics">
+              <div class="metric"><div class="label">Page Visit Users</div><div class="value">24,680</div><div class="hint">GA · filtered by campaign_id</div></div>
+              <div class="metric"><div class="label">Participating Users</div><div class="value blue">5,612</div><div class="hint">Visited and completed valid transactions</div></div>
+              <div class="metric"><div class="label">Qualified Users</div><div class="value green">2,042</div><div class="hint">Only users qualified for rewards</div><div class="breakdown"><span>Single Reward Qualified: 1,248</span><span>Cumulative Reward Qualified: 312</span><span>Streak Reward Qualified: 482</span></div></div>
+              <div class="metric"><div class="label">Successful Claim Users</div><div class="value green">1,936</div><div class="hint">Successful payout in database</div></div>
+              <div class="metric"><div class="label">Expired Reward Users</div><div class="value red">38</div><div class="hint">Expired after qualification without claim</div></div>
+              <div class="metric"><div class="label">Participation Rate</div><div class="value blue">22.74%</div><div class="hint">Participating / Page Visits</div></div>
+              <div class="metric"><div class="label">Qualification Rate</div><div class="value green">36.39%</div><div class="hint">Qualified / Participating</div></div>
+              <div class="metric"><div class="label">Claim Success Rate</div><div class="value green">94.81%</div><div class="hint">Successful Claims / Qualified</div></div>
+              <div class="metric"><div class="label">Reward Payout Amount</div><div class="value">₦ 9.68M</div><div class="hint">Only successful payouts, all amounts converted to NGN</div><div class="breakdown"><span>coins：₦ 1.28M</span><span>coupons：₦ 0.86M</span><span>cash：₦ 3.20M</span></div></div>
+              <div class="metric"><div class="label">Qualified User GMV</div><div class="value">₦ 286.42M</div><div class="hint">Valid transaction amount</div></div>
+              <div class="metric"><div class="label">ROI</div><div class="value blue">29.59x</div><div class="hint">GMV / Reward Cost</div></div>
+            </div>
+            <div class="source-note">
+              <div class="source-title">Data Source Notes</div>
+              <div>Page visits: CS uses <code>reward_page_view_eventpage</code>, CG uses <code>reward_page_view</code></div>
+              <div>Participation, qualification, payout, expiration, GMV, and ROI are based on database results</div>
+            </div>
+            <div class="source-note">
+              <div class="source-title">Configuration Rules</div>
+              <div>Thresholds, game types, streak/cumulative counts, reward content, and missed-claim validity are read from the current <code>campaign_id</code> configuration</div>
+              <div>CG: single / streak / cumulative. CS: single / cumulative. Actual game types follow campaign configuration</div>
+              <div>Periods are generated by <code>site + campaign_id</code>. Split-week sites are recalculated by period segment; regular sites use full natural weeks</div>
+            </div>
+            <div class="grid-2">
+              <div class="box">
+                <div class="box-head"><span>Core Metric Trends</span><span class="muted">Settled periods are official snapshots; in-progress periods are interim snapshots</span></div>
+                <div class="legend">
+                  <span><i class="dot" style="background:#5b8ff9"></i>Page Visit Trend</span>
+                  <span><i class="dot" style="background:#61d9a0"></i>Participating User Trend</span>
+                  <span><i class="dot" style="background:#f6bd16"></i>Qualified User Trend</span>
+                </div>
+                <div class="chart-wrap">
+                  <svg width="100%" height="300" viewBox="0 0 840 300">
+                    <g stroke="#ebeef5" stroke-width="1">
+                      <line x1="52" y1="22" x2="820" y2="22"/><line x1="52" y1="82" x2="820" y2="82"/>
+                      <line x1="52" y1="142" x2="820" y2="142"/><line x1="52" y1="202" x2="820" y2="202"/>
+                      <line x1="52" y1="262" x2="820" y2="262"/>
+                    </g>
+                    <g>
+                      <text x="12" y="266">0</text><text x="4" y="206">100</text><text x="4" y="146">200</text><text x="4" y="86">300</text><text x="4" y="26">400</text>
+                      <text x="54" y="288">03-01~03-07</text><text x="176" y="288">03-08~03-14</text><text x="298" y="288">03-15~03-21</text>
+                      <text x="420" y="288">03-22~03-28</text><text x="542" y="288">03-29~03-31</text><text x="664" y="288">04-01~04-04</text><text x="780" y="288">04-05~04-11</text>
+                    </g>
+                    <polyline fill="none" stroke="#5b8ff9" stroke-width="3" points="76,96 198,104 320,88 442,72 564,62 686,76 808,56"/>
+                    <polyline fill="none" stroke="#61d9a0" stroke-width="3" points="76,130 198,136 320,122 442,112 564,104 686,112 808,92"/>
+                    <polyline fill="none" stroke="#f6bd16" stroke-width="3" points="76,210 198,216 320,202 442,198 564,182 686,188 808,174"/>
+                    <g fill="#5b8ff9"><circle cx="76" cy="96" r="4"/><circle cx="198" cy="104" r="4"/><circle cx="320" cy="88" r="4"/><circle cx="442" cy="72" r="4"/><circle cx="564" cy="62" r="4"/><circle cx="686" cy="76" r="4"/><circle cx="808" cy="56" r="4"/></g>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="tab-page" id="details">
+            <div class="detail-filters">
+              <div class="filter"><span>Reward Status:</span><select><option>All</option><option>Not Qualified</option><option>Unclaimed</option><option>Claim Successful</option><option>Claim Failed</option><option>Expired</option></select></div>
+              <div class="filter"><span>Gap to Threshold:</span><select><option>All</option><option>₦0-5,000</option><option>₦5,000-10,000</option><option>₦10,000-20,000</option><option>₦20,000+</option></select></div>
+              <div class="filter"><span>Qualification Progress:</span><select><option>All</option><option>0%-20%</option><option>20%-50%</option><option>50%-80%</option><option>80%-99%</option><option>≥100%</option></select></div>
+              <div class="filter"><span>User ID:</span><input value="" placeholder="Enter User ID" /></div>
+              <button class="btn">Query</button>
+              <button class="btn secondary">Reset</button>
+            </div>
+            <div class="table-tools">
+              <span class="muted">8,426 user records</span>
+              <button class="btn outline">Export</button>
+            </div>
+            <table>
+              <thead>
+                <tr><th>Site</th><th>campaign_id</th><th>Statistical Period</th><th>user_id</th><th>Platform</th><th>Trade Threshold</th><th>Current Trade GMV</th><th>Gap to Threshold</th><th>Qualification Progress</th><th>Reward Status</th><th>Claimed Reward Count</th><th>Single Reward Count</th><th>Streak Reward Count</th><th>Cumulative Reward Count</th><th>Data Updated At</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P1<br/>03-01 to 03-07</td><td>10582941</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 128,600.00</td><td>₦ 0.00</td><td>128.60%</td><td><span class="status success">Claim Successful</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2026-03-08 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P2<br/>03-08 to 03-14</td><td>10840272</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 96,430.00</td><td>₦ 3,570.00</td><td>96.43%</td><td><span class="status warn">Not Qualified</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-03-15 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P3<br/>03-15 to 03-21</td><td>10277416</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 100,250.00</td><td>₦ 0.00</td><td>100.25%</td><td><span class="status error">Claim Failed</span></td><td>0</td><td>1</td><td>0</td><td>0</td><td>2026-03-22 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P4<br/>03-22 to 03-28</td><td>10723598</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 43,760.00</td><td>₦ 56,240.00</td><td>43.76%</td><td><span class="status warn">Not Qualified</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-03-29 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P5<br/>03-29 to 03-31</td><td>10958314</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 112,900.00</td><td>₦ 0.00</td><td>112.90%</td><td><span class="status pending">Unclaimed</span></td><td>0</td><td>1</td><td>0</td><td>1</td><td>2026-04-01 00:00</td></tr>
+                <tr><td>CG</td><td>TE-2026-001</td><td>P6<br/>04-01 to 04-04</td><td>10122673</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 84,510.00</td><td>₦ 15,490.00</td><td>84.51%</td><td><span class="status warn">Not Qualified</span></td><td>0</td><td>0</td><td>1</td><td>0</td><td>2026-04-05 00:00</td></tr>
+                <tr><td>CS</td><td>TE-2026-001</td><td>P1<br/>03-01 to 03-07</td><td>10631844</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 135,000.00</td><td>₦ 0.00</td><td>135.00%</td><td><span class="status success">Claim Successful</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2026-03-08 00:00</td></tr>
+                <tr><td>CS</td><td>TE-2026-001</td><td>P2<br/>03-08 to 03-14</td><td>10498125</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 18,600.00</td><td>₦ 81,400.00</td><td>18.60%</td><td><span class="status warn">Not Qualified</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-03-15 00:00</td></tr>
+                <tr><td>CS</td><td>TE-2026-001</td><td>P3<br/>03-15 to 03-21</td><td>10364082</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 152,300.00</td><td>₦ 0.00</td><td>152.30%</td><td><span class="status error">Expired</span></td><td>0</td><td>1</td><td>0</td><td>1</td><td>2026-03-22 00:00</td></tr>
+                <tr><td>CS</td><td>TE-2026-001</td><td>P4<br/>03-22 to 03-28</td><td>10087431</td><td>iOS</td><td>₦ 100,000.00</td><td>₦ 101,880.00</td><td>₦ 0.00</td><td>101.88%</td><td><span class="status success">Claim Successful</span></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2026-03-29 00:00</td></tr>
+                <tr><td>CS</td><td>TE-2026-001</td><td>P5<br/>03-29 to 03-31</td><td>10977120</td><td>Android</td><td>₦ 100,000.00</td><td>₦ 61,240.00</td><td>₦ 38,760.00</td><td>61.24%</td><td><span class="status warn">Not Qualified</span></td><td>0</td><td>0</td><td>0</td><td>0</td><td>2026-04-01 00:00</td></tr>
+              </tbody>
+            </table>
+            <div class="pagination"><span class="page-num">‹</span><span class="page-num active">1</span><span class="page-num">2</span><span class="page-num">3</span><span class="page-num">…</span><span class="page-num">42</span><span class="page-num">›</span></div>
+          </section>
+          <div class="updated">Global filters: Site → Campaign → Period → Platform. In-progress period data is as of 2026-04-08 00:00 and is only for operational reminders. Settled periods are the final review basis | Data updated at: 2026-04-08 00:00:00</div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const pages = document.querySelectorAll(".tab-page");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((item) => item.classList.remove("active"));
+        pages.forEach((page) => page.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.page).classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
