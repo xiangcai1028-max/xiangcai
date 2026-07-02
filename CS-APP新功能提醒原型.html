@@ -1,0 +1,1194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CS New Feature Highlight Prototype</title>
+  <style>
+    :root {
+      --green: #078755;
+      --green-dark: #056941;
+      --mint: #eaf8f0;
+      --ink: #101513;
+      --muted: #818986;
+      --line: #edf0ee;
+      --paper: #ffffff;
+      --soft: #f7f8f7;
+      --warning: #ffce47;
+      --badge: #ff4d65;
+      --shadow: 0 18px 55px rgba(18, 32, 25, .14);
+      --card-shadow: 0 12px 28px rgba(24, 38, 31, .06);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(7, 135, 85, .09), transparent 30%),
+        radial-gradient(circle at 82% 86%, rgba(255, 206, 71, .15), transparent 28%),
+        #eef3f0;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button {
+      font: inherit;
+      border: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .stage {
+      width: min(100vw, 430px);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .phone {
+      position: relative;
+      width: min(390px, calc(100vw - 28px));
+      height: min(844px, calc(100vh - 34px));
+      min-height: 760px;
+      overflow: hidden;
+      background: var(--paper);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, .8);
+    }
+
+    .screen {
+      height: 100%;
+      overflow-y: auto;
+      padding: 16px 14px 86px;
+      scrollbar-width: none;
+    }
+
+    .screen::-webkit-scrollbar { display: none; }
+
+    .statusbar {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #0c1110;
+    }
+
+    .signal {
+      display: grid;
+      grid-auto-flow: column;
+      align-items: end;
+      gap: 2px;
+      height: 11px;
+    }
+
+    .signal i {
+      display: block;
+      width: 3px;
+      border-radius: 2px;
+      background: #111;
+    }
+
+    .signal i:nth-child(1) { height: 4px; }
+    .signal i:nth-child(2) { height: 6px; }
+    .signal i:nth-child(3) { height: 8px; }
+    .signal i:nth-child(4) { height: 10px; }
+
+    .battery {
+      position: relative;
+      width: 21px;
+      height: 10px;
+      border: 1.5px solid #111;
+      border-radius: 3px;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -4px;
+      top: 2px;
+      width: 2px;
+      height: 4px;
+      background: #111;
+      border-radius: 0 2px 2px 0;
+    }
+
+    .battery::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: 13px;
+      height: 4px;
+      border-radius: 2px;
+      background: #111;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 30px 0 12px;
+    }
+
+    .welcome {
+      font-size: 16px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .account {
+      display: block;
+      margin-top: 2px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding-right: 2px;
+    }
+
+    .icon-button {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      background: transparent;
+      color: #111;
+    }
+
+    .support-icon {
+      width: 29px;
+      height: 29px;
+      border: 3px solid currentColor;
+      border-bottom: 0;
+      border-radius: 18px 18px 6px 6px;
+      position: relative;
+    }
+
+    .support-icon::before,
+    .support-icon::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      width: 7px;
+      height: 14px;
+      border: 3px solid currentColor;
+      background: #fff;
+      border-radius: 3px;
+    }
+
+    .support-icon::before { left: -7px; }
+    .support-icon::after { right: -7px; }
+
+    .bell-icon {
+      position: relative;
+      width: 28px;
+      height: 25px;
+      border: 3px solid currentColor;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      border-bottom: 0;
+    }
+
+    .bell-icon::before {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: 10px;
+      width: 5px;
+      height: 7px;
+      border-radius: 6px 6px 0 0;
+      background: currentColor;
+    }
+
+    .bell-icon::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 4px;
+      width: 20px;
+      height: 3px;
+      background: currentColor;
+      border-radius: 4px;
+      box-shadow: 5px 6px 0 -3px currentColor;
+    }
+
+    .count {
+      position: absolute;
+      top: -8px;
+      right: -7px;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 7px;
+      display: grid;
+      place-items: center;
+      background: var(--badge);
+      color: white;
+      border-radius: 999px;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .quick-item {
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+      min-width: 0;
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .quick-art {
+      position: relative;
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--mint);
+    }
+
+    .quick-art::before {
+      content: "";
+      position: absolute;
+      width: 43px;
+      height: 43px;
+      border-radius: 6px;
+      background: var(--green);
+      box-shadow: 12px 11px 0 rgba(7, 135, 85, .08);
+    }
+
+    .quick-art::after {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      font-size: 26px;
+      font-weight: 900;
+      text-shadow: 0 2px 0 rgba(0, 0, 0, .1);
+    }
+
+    .daily .quick-art::after { content: "✓"; }
+    .pay .quick-art::after { content: "≡"; transform: rotate(0deg); }
+    .card .quick-art::after { content: "$"; }
+    .bonus .quick-art::after { content: "✦"; }
+
+    .quick-label {
+      min-height: 45px;
+      display: grid;
+      align-items: start;
+      text-align: center;
+      font-size: 16px;
+      line-height: 1.3;
+      letter-spacing: 0;
+    }
+
+    .new-pill {
+      position: absolute;
+      top: -6px;
+      right: 1px;
+      z-index: 2;
+      min-width: 34px;
+      height: 18px;
+      padding: 0 7px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      background: #ff5d6f;
+      color: #fff;
+      border: 2px solid #fff;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .4px;
+      box-shadow: 0 4px 10px rgba(255, 93, 111, .24);
+    }
+
+    .dots {
+      margin: 20px auto 18px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: #d9dddb;
+    }
+
+    .dots span:first-child {
+      width: 9px;
+      background: #37ac4e;
+    }
+
+    .earn-card {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0 0 24px;
+      padding: 14px 12px;
+      border-radius: 18px;
+      background: var(--soft);
+      box-shadow: var(--card-shadow);
+    }
+
+    .cash-icon {
+      width: 45px;
+      height: 45px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: #dbf5ca;
+      font-size: 24px;
+    }
+
+    .earned {
+      font-size: 19px;
+      line-height: 1.3;
+    }
+
+    .earned small {
+      display: block;
+      margin-top: 5px;
+      color: #2f3331;
+      font-size: 15px;
+      letter-spacing: .8px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.1;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .section-head button {
+      padding: 4px 0;
+      background: transparent;
+      color: var(--green);
+      font-size: 17px;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .gift-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .gift-card {
+      min-height: 82px;
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 58px 1fr 72px;
+      align-items: center;
+      gap: 14px;
+      border-radius: 14px;
+      background: var(--soft);
+      box-shadow: var(--card-shadow);
+    }
+
+    .brand-icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      border-radius: 9px;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-shadow: 0 1px 3px rgba(0,0,0,.18);
+    }
+
+    .nike { background: linear-gradient(145deg, #147bf5, #0b60d6); }
+    .steam { background: linear-gradient(145deg, #04446d, #002a4b); }
+    .razer { background: #050505; color: #70f35e; }
+    .nord { background: #050505; }
+
+    .gift-name {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+      font-size: 23px;
+      line-height: 1.1;
+      font-weight: 650;
+      letter-spacing: .2px;
+    }
+
+    .gift-name small {
+      color: #2a2f2d;
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    .sell {
+      height: 42px;
+      border-radius: 10px;
+      background: var(--green);
+      color: #fff;
+      font-size: 17px;
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,.08);
+    }
+
+    .fab {
+      position: absolute;
+      right: 18px;
+      bottom: 135px;
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 10px 24px rgba(0,0,0,.16);
+      z-index: 4;
+    }
+
+    .kite {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      transform: rotate(-45deg);
+    }
+
+    .kite::before,
+    .kite::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #58b4ef;
+      clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+    }
+
+    .kite::after {
+      transform: translate(13px, 13px) scale(.55);
+      background: #0f65d8;
+    }
+
+    .tabbar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 8;
+      height: 76px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: rgba(255,255,255,.96);
+      border-top: 1px solid var(--line);
+      box-shadow: 0 -10px 25px rgba(16, 21, 19, .05);
+    }
+
+    .tab {
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 4px;
+      background: transparent;
+      color: #a9adaa;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+
+    .tab.active { color: var(--green); }
+
+    .tab-symbol {
+      width: 29px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      font-size: 19px;
+      font-weight: 800;
+      color: inherit;
+    }
+
+    .tab.active .tab-symbol {
+      background: var(--mint);
+      color: var(--green);
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background: rgba(16, 21, 19, .42);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease;
+    }
+
+    .overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      width: 100%;
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: 0 26px 60px rgba(0,0,0,.22);
+      overflow: hidden;
+      transform: translateY(12px) scale(.98);
+      transition: transform .18s ease;
+    }
+
+    .overlay.visible .modal { transform: translateY(0) scale(1); }
+
+    .modal-body {
+      padding: 28px 24px 22px;
+      text-align: center;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: #f3f5f4;
+      color: #4e5753;
+      font-size: 20px;
+    }
+
+    .update-visual {
+      width: 102px;
+      height: 102px;
+      margin: 6px auto 22px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      border-radius: 30px;
+      background: linear-gradient(145deg, #e8fff3, #f7fbf8);
+      box-shadow: inset 0 0 0 1px #dceee5;
+    }
+
+    .update-visual .phone-mini {
+      width: 52px;
+      height: 72px;
+      border-radius: 12px;
+      background: var(--green);
+      position: relative;
+      box-shadow: 0 10px 18px rgba(7, 135, 85, .22);
+    }
+
+    .update-visual .phone-mini::before {
+      content: "";
+      position: absolute;
+      top: 9px;
+      left: 13px;
+      width: 26px;
+      height: 4px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.75);
+      box-shadow: 0 16px 0 rgba(255,255,255,.75), 0 32px 0 rgba(255,255,255,.75);
+    }
+
+    .spark {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--warning);
+      box-shadow: 61px 31px 0 -4px #70d09d, -26px 34px 0 -5px #70d09d;
+      top: 17px;
+      left: 16px;
+    }
+
+    .modal h1,
+    .feature-card h1 {
+      margin: 0;
+      color: #111715;
+      font-size: 25px;
+      line-height: 1.12;
+      font-weight: 760;
+      letter-spacing: 0;
+    }
+
+    .modal p,
+    .feature-card p {
+      margin: 12px auto 0;
+      color: #66706c;
+      max-width: 285px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .primary,
+    .secondary {
+      height: 48px;
+      flex: 1;
+      border-radius: 13px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .primary {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #f1f4f2;
+      color: #46504b;
+    }
+
+    .feature-card {
+      width: 100%;
+      border-radius: 30px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 26px 60px rgba(0,0,0,.22);
+    }
+
+    .feature-art {
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+      padding: 28px 24px;
+      background:
+        radial-gradient(circle at 20% 26%, rgba(255, 206, 71, .3), transparent 16%),
+        radial-gradient(circle at 83% 18%, rgba(7, 135, 85, .18), transparent 18%),
+        linear-gradient(160deg, #f4fff8, #eef8f2);
+    }
+
+    .feature-graphic {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      border-radius: 38px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      box-shadow: 0 18px 38px rgba(4, 92, 57, .14);
+    }
+
+    .feature-graphic::before {
+      content: "";
+      width: 108px;
+      height: 130px;
+      border-radius: 18px;
+      background: linear-gradient(155deg, #0b9360, #056941);
+      box-shadow: 0 16px 0 rgba(7,135,85,.08);
+    }
+
+    .feature-graphic::after {
+      content: attr(data-icon);
+      position: absolute;
+      width: 68px;
+      height: 68px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      background: #ffdc69;
+      color: #1d2a24;
+      font-size: 34px;
+      font-weight: 900;
+      box-shadow: 0 12px 20px rgba(255, 206, 71, .26);
+    }
+
+    .feature-copy {
+      padding: 24px 24px 22px;
+      text-align: center;
+    }
+
+    .feature-copy .button-row { margin-top: 22px; }
+
+    .carousel-dots {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .carousel-dots button {
+      width: 7px;
+      height: 7px;
+      padding: 0;
+      border-radius: 99px;
+      background: #d8dfdb;
+    }
+
+    .carousel-dots button.active {
+      width: 20px;
+      background: var(--green);
+    }
+
+    .carousel-timer {
+      margin-top: 10px;
+      color: #8a9390;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
+    .toast {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 92px;
+      z-index: 30;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 16px;
+      background: rgba(16, 21, 19, .88);
+      color: #fff;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.35;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .toast.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .highlight {
+      position: absolute;
+      inset: 0;
+      z-index: 18;
+      background: rgba(9, 17, 14, .54);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+
+    .highlight.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .spotlight {
+      position: absolute;
+      top: 150px;
+      left: 192px;
+      width: 78px;
+      height: 108px;
+      border-radius: 18px;
+      border: 2px solid rgba(255,255,255,.7);
+      box-shadow: 0 0 0 999px rgba(9, 17, 14, .52);
+    }
+
+    .spotlight-card {
+      position: absolute;
+      top: 265px;
+      left: 38px;
+      right: 38px;
+      padding: 13px 16px;
+      border-radius: 14px;
+      background: #fff;
+      color: #151b18;
+      box-shadow: 0 15px 35px rgba(0,0,0,.2);
+    }
+
+    .spotlight-card strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .spotlight-card span {
+      display: block;
+      margin-top: 5px;
+      color: #68726d;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .spotlight-card button {
+      margin-top: 12px;
+      height: 38px;
+      width: 100%;
+      border-radius: 10px;
+      background: var(--green);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    @media (max-height: 820px) {
+      .phone {
+        height: calc(100vh - 20px);
+        min-height: 720px;
+      }
+
+      .top { padding-top: 18px; }
+      .quick-grid { gap: 8px; }
+      .gift-card { min-height: 74px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <section class="phone" aria-label="CS App prototype">
+      <div class="screen">
+        <div class="statusbar">
+          <span>1:19</span>
+          <span class="status-icons">
+            <span class="signal" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <span>5G</span>
+            <span class="battery" aria-hidden="true"></span>
+          </span>
+        </div>
+
+        <header class="top">
+          <div class="welcome">Welcome back,<span class="account">S22121531</span></div>
+          <div class="top-actions">
+            <button class="icon-button" id="showSupport" aria-label="Support"><span class="support-icon"></span></button>
+            <button class="icon-button" id="showUpdate" aria-label="Notifications">
+              <span class="bell-icon"></span>
+              <span class="count">3</span>
+            </button>
+          </div>
+        </header>
+
+        <nav class="quick-grid" aria-label="Quick actions">
+          <button class="quick-item daily" id="dailyAction">
+            <span class="quick-art"></span>
+            <span class="quick-label">Daily &amp;<br/>Rewards</span>
+          </button>
+          <button class="quick-item pay">
+            <span class="quick-art"></span>
+            <span class="quick-label">Pay Bills</span>
+          </button>
+          <button class="quick-item card" id="virtualCardAction">
+            <span class="new-pill" data-badge="virtual-card">NEW</span>
+            <span class="quick-art"></span>
+            <span class="quick-label">Virtual<br/>Card</span>
+          </button>
+          <button class="quick-item bonus">
+            <span class="new-pill" data-badge="buddy-bonus">NEW</span>
+            <span class="quick-art"></span>
+            <span class="quick-label">Buddy<br/>Bonus</span>
+          </button>
+        </nav>
+
+        <div class="dots"><span></span><span></span></div>
+
+        <section class="earn-card">
+          <div class="cash-icon">💵</div>
+          <div class="earned">Earned ₦23,047.2<small>S*** trade Steam/11/USD</small></div>
+        </section>
+
+        <section class="section-head">
+          <h2>Sell Gift Card</h2>
+          <button id="rateAction">Rate Calculator</button>
+        </section>
+
+        <section class="gift-list">
+          <article class="gift-card">
+            <div class="brand-icon nike">APL</div>
+            <div class="gift-name">Nike<small>₦679.32</small></div>
+            <button class="sell">Sell</button>
+          </article>
+          <article class="gift-card">
+            <div class="brand-icon steam">STM</div>
+            <div class="gift-name">Steam<small>₦858.6</small></div>
+            <button class="sell">Sell</button>
+          </article>
+          <article class="gift-card">
+            <div class="brand-icon razer">RZR</div>
+            <div class="gift-name">Cherry<small>₦925.38</small></div>
+            <button class="sell">Sell</button>
+          </article>
+          <article class="gift-card">
+            <div class="brand-icon nord">NSD</div>
+            <div class="gift-name">Razer<small>₦858.6</small></div>
+            <button class="sell">Sell</button>
+          </article>
+        </section>
+      </div>
+
+      <button class="fab" id="showFeature" aria-label="Show new feature">
+        <span class="kite"></span>
+      </button>
+
+      <nav class="tabbar" aria-label="Main tabs">
+        <button class="tab active"><span class="tab-symbol">⇥</span><span>Home</span></button>
+        <button class="tab"><span class="tab-symbol">▣</span><span>Wallet</span></button>
+        <button class="tab"><span class="tab-symbol">▤</span><span>History</span></button>
+        <button class="tab"><span class="tab-symbol">◡</span><span>Profile</span></button>
+      </nav>
+
+      <div class="highlight" id="spotlight">
+        <div class="spotlight"></div>
+        <div class="spotlight-card">
+          <strong>Virtual Card is ready to try</strong>
+          <span>Create and manage your card from the home shortcut.</span>
+          <button id="spotlightCta">Check it out</button>
+        </div>
+      </div>
+
+      <div class="overlay visible" id="updateOverlay">
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="updateTitle">
+          <button class="modal-close" id="closeUpdate" aria-label="Close">×</button>
+          <div class="modal-body">
+            <div class="update-visual">
+              <span class="spark"></span>
+              <span class="phone-mini"></span>
+            </div>
+            <h1 id="updateTitle">Update your app</h1>
+            <p>A new version is available. Update CS to access the latest features.</p>
+            <div class="button-row">
+              <button class="secondary" id="laterUpdate">Later</button>
+              <button class="primary" id="confirmUpdate">Update now</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="overlay" id="featureOverlay">
+        <section class="feature-card" role="dialog" aria-modal="true" aria-labelledby="featureTitle">
+          <div class="feature-art">
+            <div class="feature-graphic" id="featureGraphic" data-icon="$"></div>
+          </div>
+          <div class="feature-copy">
+            <h1 id="featureTitle">Virtual Card is here</h1>
+            <p id="featureText">Shop online with a flexible dollar card and manage transactions in one place.</p>
+            <div class="carousel-dots" id="featureDots" aria-label="Feature slides"></div>
+            <div class="carousel-timer" id="carouselTimer">Auto plays every 5s</div>
+            <div class="button-row">
+              <button class="secondary" id="skipFeature">Skip</button>
+              <button class="primary" id="nextFeature">Next</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="toast" id="toast">Opened Virtual Card. New badge cleared.</div>
+    </section>
+  </main>
+
+  <script>
+    const FEATURE_AUTOPLAY_MS = 5000;
+    window.FEATURE_AUTOPLAY_MS = FEATURE_AUTOPLAY_MS;
+    const slides = [
+      {
+        title: "Virtual Card is here",
+        text: "Shop online with a flexible dollar card and manage transactions in one place.",
+        icon: "$",
+        badge: "virtual-card"
+      },
+      {
+        title: "Compare rates faster",
+        text: "Use the rate calculator before selling gift cards to see your estimated payout.",
+        icon: "₦",
+        badge: null
+      },
+      {
+        title: "Buddy Bonus got better",
+        text: "Invite friends and track rewards from the refreshed Buddy Bonus entry.",
+        icon: "✦",
+        badge: "buddy-bonus"
+      }
+    ];
+
+    const updateOverlay = document.getElementById("updateOverlay");
+    const featureOverlay = document.getElementById("featureOverlay");
+    const spotlight = document.getElementById("spotlight");
+    const toast = document.getElementById("toast");
+    const title = document.getElementById("featureTitle");
+    const text = document.getElementById("featureText");
+    const graphic = document.getElementById("featureGraphic");
+    const dots = document.getElementById("featureDots");
+    const next = document.getElementById("nextFeature");
+    let slideIndex = 0;
+    let toastTimer;
+    let featureAutoplayTimer;
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add("visible");
+      toastTimer = setTimeout(() => toast.classList.remove("visible"), 2200);
+    }
+
+    function setOverlay(el, visible) {
+      el.classList.toggle("visible", visible);
+    }
+
+    function clearBadge(name) {
+      if (!name) return;
+      document.querySelectorAll(`[data-badge="${name}"]`).forEach(badge => {
+        badge.style.display = "none";
+      });
+    }
+
+    function stopFeatureAutoplay() {
+      clearInterval(featureAutoplayTimer);
+      featureAutoplayTimer = null;
+    }
+
+    function startFeatureAutoplay() {
+      stopFeatureAutoplay();
+      featureAutoplayTimer = setInterval(() => {
+        slideIndex = (slideIndex + 1) % slides.length;
+        renderSlide();
+      }, FEATURE_AUTOPLAY_MS);
+    }
+
+    function restartFeatureAutoplay() {
+      if (!featureOverlay.classList.contains("visible")) return;
+      startFeatureAutoplay();
+    }
+
+    function renderSlide() {
+      const slide = slides[slideIndex];
+      title.textContent = slide.title;
+      text.textContent = slide.text;
+      graphic.dataset.icon = slide.icon;
+      next.textContent = slideIndex === slides.length - 1 ? "Check it out" : "Next";
+      dots.innerHTML = "";
+      slides.forEach((_, index) => {
+        const dot = document.createElement("button");
+        dot.className = index === slideIndex ? "active" : "";
+        dot.type = "button";
+        dot.setAttribute("aria-label", `Slide ${index + 1}`);
+        dot.addEventListener("click", () => {
+          slideIndex = index;
+          renderSlide();
+          restartFeatureAutoplay();
+        });
+        dots.appendChild(dot);
+      });
+    }
+
+    function openFeature(startIndex = 0) {
+      slideIndex = startIndex;
+      renderSlide();
+      setOverlay(featureOverlay, true);
+      startFeatureAutoplay();
+    }
+
+    document.getElementById("confirmUpdate").addEventListener("click", () => {
+      setOverlay(updateOverlay, false);
+      setTimeout(() => openFeature(0), 220);
+    });
+
+    document.getElementById("laterUpdate").addEventListener("click", () => {
+      setOverlay(updateOverlay, false);
+      showToast("Update reminder will return after 24 hours.");
+    });
+
+    document.getElementById("closeUpdate").addEventListener("click", () => {
+      setOverlay(updateOverlay, false);
+      showToast("Update reminder will return after 24 hours.");
+    });
+
+    document.getElementById("showUpdate").addEventListener("click", () => {
+      setOverlay(updateOverlay, true);
+    });
+
+    document.getElementById("showFeature").addEventListener("click", () => {
+      openFeature(0);
+    });
+
+    document.getElementById("skipFeature").addEventListener("click", () => {
+      stopFeatureAutoplay();
+      setOverlay(featureOverlay, false);
+      showToast("This version's feature guide has been closed.");
+    });
+
+    next.addEventListener("click", () => {
+      if (slideIndex < slides.length - 1) {
+        slideIndex += 1;
+        renderSlide();
+        restartFeatureAutoplay();
+        return;
+      }
+
+      const badge = slides[slideIndex].badge || slides[0].badge;
+      clearBadge(badge);
+      stopFeatureAutoplay();
+      setOverlay(featureOverlay, false);
+      showToast("Opened the feature page. New badge cleared.");
+    });
+
+    document.getElementById("virtualCardAction").addEventListener("click", () => {
+      clearBadge("virtual-card");
+      showToast("Opened Virtual Card. New badge cleared.");
+    });
+
+    document.getElementById("dailyAction").addEventListener("click", () => {
+      setOverlay(spotlight, true);
+    });
+
+    document.getElementById("spotlightCta").addEventListener("click", () => {
+      clearBadge("virtual-card");
+      setOverlay(spotlight, false);
+      showToast("Opened Virtual Card. New badge cleared.");
+    });
+
+    spotlight.addEventListener("click", event => {
+      if (event.target === spotlight) setOverlay(spotlight, false);
+    });
+
+    document.getElementById("rateAction").addEventListener("click", () => {
+      showToast("Rate Calculator opened.");
+    });
+
+    document.getElementById("showSupport").addEventListener("click", () => {
+      showToast("Support center opened.");
+    });
+
+    renderSlide();
+  </script>
+</body>
+</html>
