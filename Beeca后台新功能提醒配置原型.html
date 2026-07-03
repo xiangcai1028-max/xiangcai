@@ -239,8 +239,8 @@
     th:last-child { border-right: 0; }
 
     td {
-      min-height: 62px;
-      padding: 14px 12px;
+      min-height: 52px;
+      padding: 10px 12px;
       border-bottom: 1px solid #ececec;
       color: #40464c;
       vertical-align: middle;
@@ -258,6 +258,35 @@
       display: inline-block;
       background: #fff;
     }
+
+    .radio.selected {
+      border-color: var(--blue);
+      box-shadow: inset 0 0 0 3px #fff;
+      background: var(--blue);
+    }
+
+    .selected-row td {
+      background: #e5f8ff;
+    }
+
+    .popup-thumb {
+      width: 38px;
+      height: 38px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 2px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.28);
+    }
+
+    .thumb-card { background: linear-gradient(145deg, #0a8f5d, #064a32); }
+    .thumb-bonus { background: linear-gradient(145deg, #101c12, #25a65a); }
+    .thumb-rate { background: linear-gradient(145deg, #116bdc, #063c83); }
+    .thumb-survey { background: linear-gradient(145deg, #f3c73d, #0b864d); color: #153325; }
+    .thumb-cloud { background: linear-gradient(145deg, #1ea7ff, #1372d9); }
 
     .status-tag {
       display: inline-flex;
@@ -280,6 +309,48 @@
       color: var(--blue);
       text-decoration: none;
       margin-right: 10px;
+    }
+
+    .pagination {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding-top: 18px;
+      color: #4f565d;
+      font-size: 13px;
+    }
+
+    .pagination button,
+    .page-size,
+    .page-jump {
+      height: 32px;
+      min-width: 32px;
+      border: 1px solid var(--line-dark);
+      background: #fff;
+      color: #485058;
+    }
+
+    .pagination button.active {
+      color: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .pagination button:disabled {
+      color: #c2c6ca;
+      background: #f7f8f9;
+      cursor: default;
+    }
+
+    .page-size {
+      min-width: 96px;
+      padding: 0 10px;
+    }
+
+    .page-jump {
+      width: 50px;
+      padding: 0 8px;
     }
 
     .modal-mask {
@@ -862,10 +933,9 @@
         <h1 class="title">新功能提醒</h1>
         <div class="panel">
           <div class="filters">
-            <label class="field-inline">名称：<input class="control" value="Virtual Card" /></label>
+            <label class="field-inline">名称：<input class="control" value="" /></label>
             <label class="field-inline">状态：<select class="control short"><option>全部</option><option>启用中</option><option>未开始</option><option>已结束</option></select></label>
-            <label class="field-inline">矩阵：<select class="control short"><option>全部矩阵</option><option>CG</option><option>CS</option><option>TC</option></select></label>
-            <label class="field-inline">平台：<select class="control short"><option>全部</option><option>iOS</option><option>Android</option></select></label>
+            <label class="field-inline">站点：<select class="control wide"><option>全部站点</option><option>cardsoon</option><option>cardmax</option><option>cardgoal</option><option>cardace</option></select></label>
             <button class="btn">搜索</button>
             <button class="btn ghost">重置</button>
           </div>
@@ -873,6 +943,7 @@
           <div class="toolbar">
             <button class="btn" id="openModal">新增</button>
             <button class="btn">编辑</button>
+            <button class="btn">复制参数</button>
             <button class="btn">结束</button>
           </div>
 
@@ -880,84 +951,142 @@
             <colgroup>
               <col style="width: 42px" />
               <col style="width: 100px" />
-              <col style="width: 150px" />
-              <col style="width: 120px" />
-              <col style="width: 110px" />
-              <col style="width: 130px" />
-              <col style="width: 120px" />
-              <col style="width: 120px" />
-              <col style="width: 150px" />
-              <col style="width: 150px" />
-              <col style="width: 96px" />
-              <col style="width: 130px" />
+              <col style="width: 90px" />
+              <col style="width: 140px" />
+              <col style="width: 100px" />
+              <col style="width: 126px" />
+              <col style="width: 60px" />
+              <col style="width: 92px" />
+              <col style="width: 102px" />
+              <col style="width: 108px" />
+              <col style="width: 90px" />
+              <col style="width: 242px" />
+              <col style="width: 78px" />
+              <col style="width: 92px" />
             </colgroup>
             <thead>
               <tr>
                 <th></th>
                 <th>活动编码</th>
-                <th>活动名称</th>
-                <th>矩阵</th>
+                <th>站点</th>
+                <th>弹窗名称</th>
                 <th>发送终端</th>
-                <th>版本规则</th>
-                <th>弹窗频次</th>
-                <th>New有效期</th>
-                <th>入口配置</th>
+                <th>版本区间</th>
+                <th>顺序</th>
+                <th>图片</th>
+                <th>频次</th>
+                <th>发送人群</th>
+                <th>发送人数</th>
                 <th>有效期</th>
                 <th>状态</th>
-                <th>操作</th>
+                <th>备注</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><span class="radio"></span></td>
+              <tr class="selected-row">
+                <td><span class="radio selected"></span></td>
                 <td>NF000012</td>
+                <td>cardsoon</td>
                 <td>Virtual Card Highlight</td>
-                <td>CG/CS/TC</td>
-                <td>iOS, Android</td>
-                <td>测试: 后端配置<br/>正式: 应用商店</td>
-                <td>同版本一次</td>
-                <td>14天 / 最大30天</td>
-                <td>轮播弹窗(2项) + 功能入口</td>
-                <td>2026-07-01 00:00:00~<br/>2026-07-30 23:59:59</td>
-                <td><span class="status-tag">启用中</span></td>
-                <td><a class="link" href="#">编辑</a><a class="link" href="#">预览</a></td>
+                <td>Android,iOS</td>
+                <td>3.12.0~3.99.99</td>
+                <td>1</td>
+                <td><span class="popup-thumb thumb-card">VC</span></td>
+                <td>仅弹一次</td>
+                <td>所有人</td>
+                <td>569</td>
+                <td>2026-07-03 00:00:00~2026-07-17 00:00:00</td>
+                <td>启用中</td>
+                <td>Virtual Card 新功能上线</td>
               </tr>
               <tr>
                 <td><span class="radio"></span></td>
                 <td>NF000011</td>
+                <td>cardmax</td>
                 <td>Buddy Bonus Refresh</td>
-                <td>CS</td>
-                <td>iOS, Android</td>
-                <td>应用商店</td>
-                <td>同版本一次</td>
-                <td>14天</td>
-                <td>弹窗 + Buddy Bonus入口</td>
-                <td>2026-06-11 00:00:00~<br/>2026-06-24 23:59:59</td>
-                <td><span class="status-tag gray">已结束</span></td>
-                <td><a class="link" href="#">复制</a><a class="link" href="#">查看</a></td>
+                <td>Android,iOS</td>
+                <td>1.0.0~3.0.0</td>
+                <td>1</td>
+                <td><span class="popup-thumb thumb-bonus">BB</span></td>
+                <td>每次启动</td>
+                <td>所有人</td>
+                <td>229</td>
+                <td>2026-06-11 23:18:00~2026-06-16 04:00:00</td>
+                <td>已结束</td>
+                <td>测试</td>
               </tr>
               <tr>
                 <td><span class="radio"></span></td>
                 <td>NF000010</td>
+                <td>cardgoal</td>
                 <td>Rate Calculator Guide</td>
-                <td>CS</td>
-                <td>Android</td>
-                <td>后端配置</td>
-                <td>同版本一次</td>
-                <td>7天</td>
-                <td>New入口</td>
-                <td>2026-06-08 00:00:00~<br/>2026-06-15 23:59:59</td>
-                <td><span class="status-tag gray">已结束</span></td>
-                <td><a class="link" href="#">复制</a><a class="link" href="#">查看</a></td>
+                <td>Android,iOS</td>
+                <td>1.0.0~3.0.0</td>
+                <td>1</td>
+                <td><span class="popup-thumb thumb-rate">RC</span></td>
+                <td>每次启动</td>
+                <td>所有人</td>
+                <td>5531</td>
+                <td>2026-06-09 04:00:00~2026-06-16 04:00:00</td>
+                <td>已结束</td>
+                <td>测试</td>
+              </tr>
+              <tr>
+                <td><span class="radio"></span></td>
+                <td>NF000009</td>
+                <td>cardgoal</td>
+                <td>Virtual Card Survey</td>
+                <td>Android,iOS</td>
+                <td>1.0.0~3.0.0</td>
+                <td>1</td>
+                <td><span class="popup-thumb thumb-survey">S</span></td>
+                <td>每天弹一次</td>
+                <td>所有人</td>
+                <td>5508</td>
+                <td>2026-06-11 23:18:00~2026-06-16 04:00:00</td>
+                <td>已结束</td>
+                <td>测试</td>
+              </tr>
+              <tr>
+                <td><span class="radio"></span></td>
+                <td>NF000008</td>
+                <td>cardace</td>
+                <td>CardAce 弹窗设置</td>
+                <td>Android,iOS</td>
+                <td>1.0.0~3.0.0</td>
+                <td>1</td>
+                <td><span class="popup-thumb thumb-cloud">C9</span></td>
+                <td>每次启动</td>
+                <td>所有人</td>
+                <td>33</td>
+                <td>2026-06-09 02:23:00~2026-06-16 04:00:00</td>
+                <td>已结束</td>
+                <td>测试</td>
               </tr>
             </tbody>
           </table>
+          <div class="pagination">
+            <span>共 107 条</span>
+            <button disabled>‹</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button>5</button>
+            <span>…</span>
+            <button>11</button>
+            <button>›</button>
+            <select class="page-size"><option>10 / page</option></select>
+            <span>Go to</span>
+            <input class="page-jump" />
+            <span>Page</span>
+          </div>
         </div>
       </section>
     </main>
   </div>
 
-  <div class="modal-mask visible" id="modalMask">
+  <div class="modal-mask" id="modalMask">
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <header class="modal-head">
         <span id="modalTitle">新增新功能提醒</span>
