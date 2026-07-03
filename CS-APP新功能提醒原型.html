@@ -892,7 +892,7 @@
           <div class="welcome">Welcome back,<span class="account">S22121531</span></div>
           <div class="top-actions">
             <button class="icon-button" id="showSupport" aria-label="Support"><span class="support-icon"></span></button>
-            <button class="icon-button" id="showUpdate" aria-label="Notifications">
+            <button class="icon-button" aria-label="Notifications">
               <span class="bell-icon"></span>
               <span class="count">3</span>
             </button>
@@ -976,24 +976,6 @@
         </div>
       </div>
 
-      <div class="overlay visible" id="updateOverlay">
-        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="updateTitle">
-          <button class="modal-close" id="closeUpdate" aria-label="Close">×</button>
-          <div class="modal-body">
-            <div class="update-visual">
-              <span class="spark"></span>
-              <span class="phone-mini"></span>
-            </div>
-            <h1 id="updateTitle">Update your app</h1>
-            <p>A new version is available. Update CS to access the latest features.</p>
-            <div class="button-row">
-              <button class="secondary" id="laterUpdate">Later</button>
-              <button class="primary" id="confirmUpdate">Update now</button>
-            </div>
-          </div>
-        </section>
-      </div>
-
       <div class="overlay" id="featureOverlay">
         <section class="feature-card" role="dialog" aria-modal="true" aria-labelledby="featureTitle">
           <div class="feature-art">
@@ -1040,7 +1022,6 @@
       }
     ];
 
-    const updateOverlay = document.getElementById("updateOverlay");
     const featureOverlay = document.getElementById("featureOverlay");
     const spotlight = document.getElementById("spotlight");
     const toast = document.getElementById("toast");
@@ -1116,25 +1097,6 @@
       setOverlay(featureOverlay, true);
       startFeatureAutoplay();
     }
-
-    document.getElementById("confirmUpdate").addEventListener("click", () => {
-      setOverlay(updateOverlay, false);
-      setTimeout(() => openFeature(0), 220);
-    });
-
-    document.getElementById("laterUpdate").addEventListener("click", () => {
-      setOverlay(updateOverlay, false);
-      showToast("Update reminder will return after 24 hours.");
-    });
-
-    document.getElementById("closeUpdate").addEventListener("click", () => {
-      setOverlay(updateOverlay, false);
-      showToast("Update reminder will return after 24 hours.");
-    });
-
-    document.getElementById("showUpdate").addEventListener("click", () => {
-      setOverlay(updateOverlay, true);
-    });
 
     document.getElementById("showFeature").addEventListener("click", () => {
       openFeature(0);
