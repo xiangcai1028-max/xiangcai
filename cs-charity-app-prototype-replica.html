@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cardsoon Charity App Prototype Replica</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #0f172a;
+      --muted: #5e6a7c;
+      --green: #15956d;
+      --green-deep: #0c7b75;
+      --green-soft: #edf8f5;
+      --lime: #83c72d;
+      --yellow: #ffc947;
+      --line: #d7e0e8;
+      --blue: #1684ff;
+      --shadow: 0 20px 42px rgba(26, 70, 55, .16);
+    }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: #eee;
+      letter-spacing: 0;
+    }
+    body {
+      min-width: 1180px;
+    }
+    .board {
+      min-height: 100vh;
+      padding: 64px 0;
+      background:
+        linear-gradient(180deg, #eef8f5 0%, #e8f7f2 58%, #f4faf7 100%);
+    }
+    .hero-area {
+      min-height: calc(100vh - 128px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .phone-main {
+      width: 410px;
+      overflow: hidden;
+      border-radius: 22px;
+      background: #f8fcfb;
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      position: relative;
+      min-height: 458px;
+      padding: 18px 18px 0;
+      color: #fff;
+      background:
+        linear-gradient(180deg, rgba(16, 83, 59, .06), rgba(103, 83, 36, .6)),
+        linear-gradient(145deg, #078392 0%, #209d6c 58%, #7b7436 100%);
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -44px;
+      bottom: -80px;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: rgba(255, 201, 71, .18);
+    }
+    .topbar {
+      position: relative;
+      z-index: 3;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .round-btn {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 50%;
+      color: #fff;
+      background: rgba(255,255,255,.18);
+      font-weight: 700;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .brand-mark {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      color: var(--green);
+      background: #fff;
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .spark {
+      position: relative;
+      z-index: 2;
+      width: 12px;
+      height: 12px;
+      margin: 16px 0 10px 4px;
+      border-radius: 50%;
+      background: #f4bd38;
+      box-shadow: 0 0 0 5px rgba(255,255,255,.12);
+    }
+    .hero-copy {
+      position: relative;
+      z-index: 3;
+      width: 198px;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: .98;
+      font-weight: 950;
+    }
+    .hero p {
+      margin: 11px 0 0;
+      font-size: 12px;
+      line-height: 1.34;
+      font-weight: 780;
+    }
+    .well-scene {
+      position: absolute;
+      z-index: 2;
+      right: 12px;
+      top: 143px;
+      width: 160px;
+      height: 160px;
+    }
+    .well-bg {
+      position: absolute;
+      right: 0;
+      bottom: 6px;
+      width: 128px;
+      height: 128px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .16);
+    }
+    .well-roof {
+      position: absolute;
+      left: 41px;
+      top: 20px;
+      width: 82px;
+      height: 54px;
+      border-top: 9px solid #9e5749;
+      border-left: 9px solid #9e5749;
+      border-right: 9px solid #9e5749;
+      border-radius: 52px 52px 0 0;
+    }
+    .well-roof::after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 14px;
+      width: 58px;
+      height: 9px;
+      background: #c98658;
+    }
+    .well-tower {
+      position: absolute;
+      left: 51px;
+      top: 67px;
+      width: 74px;
+      height: 71px;
+      border: 7px solid #dbb568;
+      background: #9be6ee;
+    }
+    .well-tower span {
+      display: block;
+      height: 12px;
+      margin: 8px 0;
+      background: #4fc4dc;
+    }
+    .well-post {
+      position: absolute;
+      top: 66px;
+      width: 7px;
+      height: 87px;
+      background: #d9c46f;
+    }
+    .well-post.left { left: 38px; }
+    .well-post.right { right: 31px; }
+    .bucket {
+      position: absolute;
+      right: 26px;
+      top: 54px;
+      width: 23px;
+      height: 36px;
+      border-radius: 6px 6px 4px 4px;
+      background: #ffd24d;
+    }
+    .bucket::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: -8px;
+      width: 17px;
+      height: 12px;
+      border: 3px solid #ffe990;
+      border-bottom: 0;
+      border-radius: 12px 12px 0 0;
+    }
+    .ground {
+      position: absolute;
+      right: 8px;
+      bottom: 0;
+      width: 116px;
+      height: 29px;
+      border-radius: 8px 8px 0 0;
+      background: #f1b743;
+    }
+    .stage-card {
+      position: relative;
+      z-index: 4;
+      width: 218px;
+      margin-top: 14px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 6px;
+      background: rgba(58, 109, 92, .82);
+      box-shadow: 0 14px 28px rgba(13, 62, 48, .18);
+    }
+    .stage-row {
+      display: flex;
+      justify-content: space-between;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 950;
+    }
+    .track {
+      height: 8px;
+      margin: 8px 0 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      overflow: hidden;
+    }
+    .fill {
+      width: 78%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ffc947, #fff6b6);
+    }
+    .goal-copy {
+      color: #fff;
+      font-size: 9px;
+      line-height: 1.24;
+      font-weight: 850;
+    }
+    .live-head {
+      display: flex;
+      justify-content: space-between;
+      margin: 9px 0 6px;
+      color: #fff;
+      font-size: 8px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+    .live-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2adb8b;
+    }
+    .donation {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 7px;
+      align-items: center;
+      min-height: 30px;
+      margin-top: 5px;
+      padding: 6px 7px;
+      border-radius: 5px;
+      background: rgba(255,255,255,.13);
+      color: #fff;
+    }
+    .donation b {
+      display: block;
+      font-size: 8px;
+      line-height: 1.15;
+    }
+    .donation span {
+      display: block;
+      margin-top: 1px;
+      color: rgba(255,255,255,.8);
+      font-size: 7px;
+    }
+    .donation strong {
+      color: #fff9bf;
+      font-size: 10px;
+    }
+    .droplets-card {
+      position: absolute;
+      z-index: 5;
+      right: 40px;
+      top: 268px;
+      width: 126px;
+      height: 116px;
+      padding: 15px 12px;
+      border-radius: 6px;
+      color: var(--ink);
+      background: #fff;
+      box-shadow: 0 13px 26px rgba(14, 54, 45, .17);
+    }
+    .droplets-card h3 {
+      margin: 0 0 19px;
+      font-size: 13px;
+      line-height: 1.08;
+      font-weight: 950;
+    }
+    .droplets-card strong {
+      display: block;
+      text-align: center;
+      font-size: 19px;
+      font-weight: 950;
+    }
+    .droplets-card span {
+      display: block;
+      margin-top: 6px;
+      text-align: center;
+      color: #385d83;
+      font-size: 8px;
+      font-weight: 700;
+    }
+    .content {
+      position: relative;
+      margin-top: -20px;
+      padding: 0 16px 29px;
+      background: #f8fcfb;
+    }
+    .contrib-card {
+      position: relative;
+      z-index: 6;
+      padding: 16px 16px 15px;
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(31, 64, 54, .09);
+    }
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 13px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 950;
+    }
+    .section-head a {
+      color: #007b70;
+      font-size: 10px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+    .contrib-row {
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      height: 51px;
+      margin-top: 9px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: #fff;
+      font-size: 11px;
+      font-weight: 850;
+    }
+    .coin {
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #fff;
+      background: #28bf86;
+      font-weight: 950;
+    }
+    .coin.yellow {
+      color: #1a2630;
+      background: #ffc247;
+    }
+    .rules {
+      padding: 19px 9px 2px;
+    }
+    .rules h3 {
+      margin: 0 0 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .rules ol {
+      margin: 0;
+      padding-left: 15px;
+      font-size: 10px;
+      line-height: 1.42;
+    }
+    .rules li + li { margin-top: 9px; }
+    .rules li::marker {
+      color: #1684ff;
+      font-weight: 900;
+    }
+    .start-btn {
+      display: block;
+      width: calc(100% - 22px);
+      height: 35px;
+      margin: 25px auto 0;
+      border: 0;
+      border-radius: 5px;
+      color: #fff;
+      background: var(--lime);
+      box-shadow: 0 12px 26px rgba(131, 199, 45, .28);
+      font-size: 17px;
+      font-weight: 950;
+      text-align: center;
+      line-height: 35px;
+    }
+    .mini-phone {
+      position: relative;
+      width: 290px;
+      height: 626px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .mini-phone.wide {
+      width: 290px;
+    }
+    .statusbar {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 11px;
+      color: #000;
+      font-size: 9px;
+      font-weight: 700;
+    }
+    .mini-nav {
+      height: 42px;
+      display: grid;
+      grid-template-columns: 42px 1fr 42px;
+      align-items: center;
+      padding: 0 6px;
+      color: #111;
+      font-size: 15px;
+      text-align: center;
+    }
+    .back {
+      font-size: 22px;
+      text-align: left;
+      padding-left: 9px;
+    }
+    .tabs {
+      width: 200px;
+      height: 24px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      margin: 0 auto 20px;
+      border: 1px solid #1684ff;
+      border-radius: 2px;
+      overflow: hidden;
+      color: #1684ff;
+      font-size: 9px;
+    }
+    .tabs.three {
+      width: 210px;
+      grid-template-columns: repeat(3, 1fr);
+      opacity: .75;
+    }
+    .tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+    .tab.active {
+      color: #fff;
+      background: #1684ff;
+    }
+    .record-content {
+      padding: 0 24px;
+    }
+    .summary-line {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 13px;
+      font-size: 10px;
+    }
+    .summary-line span:first-child {
+      width: 122px;
+    }
+    .record-row {
+      height: 52px;
+      display: grid;
+      grid-template-columns: 29px 1fr auto;
+      align-items: center;
+      margin: 14px 0;
+      padding: 0 12px;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+    .placeholder-icon {
+      width: 17px;
+      height: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #b2bac4;
+      background: #eef1f3;
+      font-size: 10px;
+    }
+    .record-name {
+      font-size: 14px;
+    }
+    .record-time {
+      margin-top: 2px;
+      color: #8a96a3;
+      font-size: 8px;
+    }
+    .plus {
+      color: #70bd27;
+      font-size: 13px;
+    }
+    .home-indicator {
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      width: 92px;
+      height: 4px;
+      border-radius: 99px;
+      background: #000;
+      transform: translateX(-50%);
+    }
+    .badge-summary {
+      margin: 0 0 13px;
+      font-size: 10px;
+    }
+    .badge-card {
+      min-height: 332px;
+      padding: 12px 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      position: relative;
+    }
+    .badge-head {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      align-items: start;
+      gap: 8px;
+    }
+    .medal {
+      width: 28px;
+      height: 28px;
+      position: relative;
+      border: 4px solid #f26722;
+      border-radius: 50%;
+      background: #f9be2e;
+      box-shadow: inset 0 0 0 3px #ffe780;
+    }
+    .medal::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 22px;
+      width: 14px;
+      height: 10px;
+      background: #f26722;
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
+    }
+    .badge-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .badge-date {
+      margin-top: 2px;
+      color: #7a8491;
+      font-size: 8px;
+    }
+    .share {
+      color: #43a51b;
+      font-size: 12px;
+    }
+    .badge-copy {
+      margin: 11px 0 12px;
+      font-size: 10px;
+      line-height: 1.38;
+    }
+    .video {
+      height: 86px;
+      display: flex;
+      align-items: end;
+      padding: 0 9px 9px;
+      color: #fff;
+      background: #444;
+      font-size: 9px;
+    }
+    .video-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .play {
+      width: 0;
+      height: 0;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-left: 10px solid #fff;
+    }
+    .image-block {
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 12px;
+      color: #a0a9b4;
+      background: #e5e5e5;
+      font-size: 18px;
+    }
+    .modal-phone {
+      position: relative;
+      width: 290px;
+      height: 626px;
+      background: #999;
+      overflow: hidden;
+    }
+    .modal-phone .mini-nav,
+    .modal-phone .statusbar {
+      opacity: .45;
+    }
+    .modal-phone .tabs {
+      margin-bottom: 12px;
+      opacity: .45;
+    }
+    .dim-list {
+      margin: 0 22px;
+      opacity: .24;
+    }
+    .dim-row {
+      height: 48px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+    .share-modal {
+      position: absolute;
+      left: 31px;
+      top: 129px;
+      width: 226px;
+      min-height: 360px;
+      padding: 24px 20px 18px;
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(0,0,0,.14);
+    }
+    .modal-close {
+      position: absolute;
+      right: 12px;
+      top: 9px;
+      font-size: 22px;
+      color: #111;
+    }
+    .modal-image {
+      height: 91px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 24px 0 24px;
+      color: #9aa3af;
+      background: #e5e5e5;
+    }
+    .modal-copy {
+      font-size: 14px;
+      line-height: 1.23;
+    }
+    .copy-btn {
+      display: block;
+      width: 58px;
+      height: 24px;
+      margin: 28px auto 0;
+      border: 1px solid #2f7dff;
+      border-radius: 2px;
+      color: #2f7dff;
+      background: #fff;
+      font-size: 9px;
+      text-align: center;
+      line-height: 22px;
+    }
+    .phone-main.mode-records > .hero,
+    .phone-main.mode-records > .content {
+      display: none;
+    }
+    .record-app {
+      display: none;
+      position: relative;
+      width: 100%;
+      min-height: 720px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .phone-main.mode-records .record-app {
+      display: block;
+    }
+    .record-app .statusbar {
+      height: 34px;
+      padding: 0 18px;
+      font-size: 10px;
+    }
+    .record-app .mini-nav {
+      height: 54px;
+      grid-template-columns: 54px 1fr 54px;
+      padding: 0 10px;
+      font-size: 16px;
+    }
+    .record-app .back,
+    .record-app .share,
+    .record-app .modal-close,
+    .record-app .tab {
+      cursor: pointer;
+    }
+    .record-app .tabs {
+      width: 226px;
+      height: 26px;
+      margin-bottom: 22px;
+    }
+    .record-app .record-content {
+      padding: 0 34px;
+    }
+    .record-panel {
+      display: none;
+    }
+    .record-panel.active {
+      display: block;
+    }
+    .record-app .summary-line {
+      font-size: 12px;
+    }
+    .record-app .record-row {
+      height: 60px;
+      margin: 15px 0;
+    }
+    .record-app .badge-card {
+      min-height: 352px;
+    }
+    .record-app .home-indicator {
+      bottom: 13px;
+    }
+    .record-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      background: rgba(0,0,0,.38);
+    }
+    .record-app.share-open .record-overlay {
+      display: block;
+    }
+    .record-app .share-modal {
+      left: 50%;
+      top: 118px;
+      width: 260px;
+      min-height: 382px;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <section class="hero-area">
+      <div class="phone-main">
+        <div class="hero">
+          <div class="topbar">
+            <div class="round-btn">‹</div>
+            <div class="brand"><span class="brand-mark">C</span>Cardsoon Charity</div>
+            <div class="round-btn">⇧</div>
+          </div>
+          <div class="spark"></div>
+          <div class="hero-copy">
+            <h1>Clean Water Program</h1>
+            <p>Your completed trades automatically contribute droplets to the current stage.</p>
+          </div>
+
+          <div class="well-scene" aria-hidden="true">
+            <div class="well-bg"></div>
+            <div class="well-roof"></div>
+            <div class="well-post left"></div>
+            <div class="well-post right"></div>
+            <div class="well-tower"><span></span><span></span><span></span></div>
+            <div class="bucket"></div>
+            <div class="ground"></div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-row"><span>Stage 03 · Lagos Well</span><span>78%</span></div>
+            <div class="track"><div class="fill"></div></div>
+            <div class="goal-copy">3,900 / 5,000 droplets · next milestone at 4,000</div>
+            <div class="live-head">
+              <span class="live-title"><span class="live-dot"></span>LIVE DONATIONS</span>
+              <span>24 updates today</span>
+            </div>
+            <div class="donation">
+              <div><b>Ayo donated 92 droplets</b><span>Gift Card Sales · Lagos Well</span></div>
+              <strong>+92</strong>
+            </div>
+            <div class="donation">
+              <div><b>Mina donated 20 droplets</b><span>Community display · not ranked</span></div>
+              <strong>+20</strong>
+            </div>
+          </div>
+
+          <div class="droplets-card">
+            <h3>My stage<br />droplets</h3>
+            <strong>2,080</strong>
+            <span>Current stage total</span>
+          </div>
+        </div>
+
+        <div class="content">
+          <section class="contrib-card">
+            <div class="section-head">
+              <h2>My Contributions</h2>
+              <a href="#records" id="open-records">View More</a>
+            </div>
+            <div class="contrib-row">
+              <span class="coin">✓</span>
+              <span>VDC transactions</span>
+              <strong>+20 Droplets</strong>
+            </div>
+            <div class="contrib-row">
+              <span class="coin yellow">G</span>
+              <span>Gift Card transactions</span>
+              <strong>+11 Droplets</strong>
+            </div>
+          </section>
+
+          <section class="rules">
+            <h3>Rules</h3>
+            <ol>
+              <li>Eligible completed trades auto-contribute droplets to the current stage.</li>
+              <li>System user display rule enabled for community activity, but it does not affect real ranking or badge settlement.</li>
+            </ol>
+            <div class="start-btn">start trade</div>
+          </section>
+        </div>
+
+        <section class="record-app" aria-label="My Records interactive page">
+          <div class="statusbar"><span>12:00</span><span>▴▴ ▬</span></div>
+          <div class="mini-nav"><span class="back" id="back-home">‹</span><span>My Records</span><span></span></div>
+          <div class="tabs">
+            <span class="tab active" data-record-tab="droplets">Droplets</span>
+            <span class="tab" data-record-tab="badges">Badges</span>
+          </div>
+
+          <div class="record-panel active" data-record-panel="droplets">
+            <div class="record-content">
+              <div class="summary-line"><span>My total Droplets:</span><strong>12000</strong></div>
+              <div class="summary-line"><span>Donated Droplets:</span><strong>8000</strong></div>
+              <div class="record-row">
+                <span class="placeholder-icon">▧</span>
+                <div><div class="record-name">Gift Cards</div><div class="record-time">2026.02.01 10:00</div></div>
+                <span class="plus">+20</span>
+              </div>
+              <div class="record-row">
+                <span class="placeholder-icon">▧</span>
+                <div><div class="record-name">Virtual USD Card</div><div class="record-time">2026.02.01 09:00</div></div>
+                <span class="plus">+20</span>
+              </div>
+              <div class="record-row">
+                <span class="placeholder-icon">▧</span>
+                <div><div class="record-name">Utility Bills</div><div class="record-time">2026.02.01 08:00</div></div>
+                <span class="plus">+20</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="record-panel" data-record-panel="badges">
+            <div class="record-content">
+              <p class="badge-summary">My Badges： 3</p>
+              <div class="badge-card">
+                <div class="badge-head">
+                  <span class="medal"></span>
+                  <div>
+                    <div class="badge-title">Basic Well</div>
+                    <div class="badge-date">2026.02.01 10:00 obtained</div>
+                  </div>
+                  <span class="share" id="open-share">Share</span>
+                </div>
+                <p class="badge-copy">You have earned a badge!<br />Thank you for being our top 5% users who participated in this event</p>
+                <div class="video">
+                  <div class="video-bar"><span class="play"></span><span>0:00 / 0:00</span><span style="margin-left:auto;">◱ ⋯</span></div>
+                </div>
+                <div class="image-block">▧</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="record-overlay" id="share-overlay">
+            <div class="share-modal">
+              <div class="modal-close" id="close-share">×</div>
+              <div class="modal-image">▧</div>
+              <div class="modal-copy">I’ve earned the badge! We completed [Project Name] alongside Cardsoon. Come join us! [Insert event video link]</div>
+              <div class="copy-btn">Copy Link</div>
+            </div>
+          </div>
+          <div class="home-indicator"></div>
+        </section>
+      </div>
+    </section>
+
+  </main>
+  <script>
+    const phone = document.querySelector(".phone-main");
+    const openRecords = document.querySelector("#open-records");
+    const backHome = document.querySelector("#back-home");
+    const tabs = document.querySelectorAll("[data-record-tab]");
+    const panels = document.querySelectorAll("[data-record-panel]");
+    const openShare = document.querySelector("#open-share");
+    const closeShare = document.querySelector("#close-share");
+    const shareOverlay = document.querySelector("#share-overlay");
+    const recordApp = document.querySelector(".record-app");
+
+    function showRecords(event) {
+      event.preventDefault();
+      phone.classList.add("mode-records");
+      phone.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+
+    function showHome() {
+      phone.classList.remove("mode-records");
+      recordApp.classList.remove("share-open");
+    }
+
+    function setRecordTab(name) {
+      tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.recordTab === name));
+      panels.forEach((panel) => panel.classList.toggle("active", panel.dataset.recordPanel === name));
+      recordApp.classList.remove("share-open");
+    }
+
+    openRecords.addEventListener("click", showRecords);
+    backHome.addEventListener("click", showHome);
+    tabs.forEach((tab) => tab.addEventListener("click", () => setRecordTab(tab.dataset.recordTab)));
+    openShare.addEventListener("click", () => recordApp.classList.add("share-open"));
+    closeShare.addEventListener("click", () => recordApp.classList.remove("share-open"));
+    shareOverlay.addEventListener("click", (event) => {
+      if (event.target === shareOverlay) recordApp.classList.remove("share-open");
+    });
+  </script>
+</body>
+</html>
