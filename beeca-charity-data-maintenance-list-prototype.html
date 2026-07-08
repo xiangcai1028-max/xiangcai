@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beeca 慈善游戏化数据维护列表</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --nav: #191d22;
+      --nav-soft: #242a3c;
+      --page: #f4f6fb;
+      --panel: #fff;
+      --line: #e2e8f0;
+      --line-dark: #cbd5e1;
+      --head: #eef1f5;
+      --text: #263241;
+      --muted: #697586;
+      --blue: #2d8cf0;
+      --blue-dark: #1478d4;
+      --green: #14a46c;
+      --orange: #f59e0b;
+      --red: #ff4d4f;
+    }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background: var(--page);
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 205px 1fr;
+    }
+    .sidebar {
+      padding: 18px 0;
+      background: var(--nav);
+      color: #cbd5e1;
+    }
+    .brand {
+      padding: 0 24px 18px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .nav-title,
+    .nav-item {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+    }
+    .nav-title {
+      margin-top: 12px;
+      color: var(--blue);
+      font-weight: 700;
+    }
+    .nav-item {
+      color: #aeb7c4;
+    }
+    .nav-item.active {
+      color: var(--blue);
+      background: var(--nav-soft);
+      border-left: 3px solid var(--blue);
+      padding-left: 21px;
+    }
+    .content {
+      min-width: 1180px;
+      display: grid;
+      grid-template-rows: 58px 1fr;
+    }
+    .topbar {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 22px;
+      padding: 0 32px;
+      border-bottom: 1px solid #edf0f3;
+      background: #fff;
+    }
+    .lang {
+      height: 32px;
+      min-width: 96px;
+      padding: 0 12px;
+      border: 1px solid var(--line-dark);
+      background: #fff;
+      color: #4b5563;
+    }
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #1f3f78;
+    }
+    .page {
+      padding: 22px 24px 34px;
+    }
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .title {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+    }
+    .type-tag {
+      display: inline-flex;
+      align-items: center;
+      height: 26px;
+      padding: 0 10px;
+      border: 1px solid #bfdbfe;
+      border-radius: 13px;
+      color: #1d4ed8;
+      background: #eff6ff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .panel {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--panel);
+    }
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) auto auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .field {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 8px;
+      color: #4b5563;
+      white-space: nowrap;
+    }
+    .required {
+      color: var(--red);
+      margin-right: 2px;
+    }
+    .control {
+      width: 100%;
+      height: 34px;
+      padding: 0 10px;
+      border: 1px solid var(--line-dark);
+      border-radius: 2px;
+      color: #263241;
+      background: #fff;
+    }
+    .btn {
+      height: 34px;
+      min-width: 70px;
+      padding: 0 16px;
+      border: 1px solid var(--line-dark);
+      border-radius: 3px;
+      color: #374151;
+      background: #fff;
+    }
+    .btn.primary {
+      border-color: var(--blue);
+      color: #fff;
+      background: var(--blue);
+    }
+    .btn.primary:hover { background: var(--blue-dark); }
+    .btn.danger {
+      border-color: #ffccc7;
+      color: var(--red);
+      background: #fff;
+    }
+    .btn.success {
+      border-color: #bbf7d0;
+      color: #047857;
+      background: #ecfdf5;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tip {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    th,
+    td {
+      padding: 12px 10px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+    th {
+      height: 48px;
+      background: var(--head);
+      color: #334155;
+      font-weight: 800;
+    }
+    th:last-child,
+    td:last-child { border-right: 0; }
+    tr:last-child td { border-bottom: 0; }
+    .radio-cell {
+      width: 38px;
+      text-align: center;
+    }
+    .radio {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      border: 1px solid #aab4c0;
+      border-radius: 50%;
+      background: #fff;
+    }
+    .radio.active {
+      border: 4px solid var(--blue);
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .status.active {
+      color: #047857;
+      background: #dcfce7;
+    }
+    .status.disabled {
+      color: #64748b;
+      background: #f1f5f9;
+    }
+    .status.draft {
+      color: #9a3412;
+      background: #ffedd5;
+    }
+    .progress {
+      height: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e5e7eb;
+    }
+    .progress span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--blue);
+    }
+    .progress-copy {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .link {
+      padding: 0;
+      border: 0;
+      color: var(--blue);
+      background: transparent;
+    }
+    .link.danger { color: var(--red); }
+    .link.success { color: var(--green); }
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      color: #64748b;
+    }
+    .page-btn {
+      min-width: 30px;
+      height: 30px;
+      border: 1px solid var(--line-dark);
+      border-radius: 2px;
+      background: #fff;
+      color: #334155;
+    }
+    .page-btn.active {
+      color: #fff;
+      border-color: var(--blue);
+      background: var(--blue);
+    }
+    .note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px solid #dbeafe;
+      border-radius: 4px;
+      background: #f8fbff;
+      color: #475569;
+      line-height: 1.65;
+    }
+    .note strong {
+      color: #1e3a8a;
+    }
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, .38);
+    }
+    .modal-mask.show { display: flex; }
+    .confirm-modal {
+      width: 420px;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, .24);
+    }
+    .confirm-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 54px;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 800;
+    }
+    .modal-close {
+      width: 26px;
+      height: 26px;
+      border: 0;
+      background: transparent;
+      color: #64748b;
+      font-size: 20px;
+      line-height: 1;
+    }
+    .confirm-body {
+      padding: 22px 22px 18px;
+      color: #475569;
+      line-height: 1.7;
+    }
+    .confirm-body strong {
+      color: #111827;
+    }
+    .confirm-foot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 18px 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">Beeca</div>
+      <div class="nav-title">Marketing</div>
+      <div class="nav-item">New Feature</div>
+      <div class="nav-item active">Charity Program</div>
+      <div class="nav-item">Reward Center</div>
+      <div class="nav-title">Operations</div>
+      <div class="nav-item">Orders</div>
+      <div class="nav-item">Users</div>
+      <div class="nav-item">Reports</div>
+      <div class="nav-title">System</div>
+      <div class="nav-item">Permissions</div>
+      <div class="nav-item">Audit Logs</div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <select class="lang"><option>English</option><option>简体中文</option></select>
+        <span>Admin</span>
+        <div class="avatar"></div>
+      </header>
+
+      <section class="page">
+        <div class="title-row">
+          <h1 class="title">慈善游戏化项目数据维护</h1>
+          <span class="type-tag">数据类型：Long-term Charity Gamification Project</span>
+        </div>
+
+        <div class="panel">
+          <div class="filters">
+            <label class="field"><span><span class="required">*</span>站点：</span>
+              <select class="control">
+                <option>全部站点</option>
+                <option>cardsoon</option>
+                <option>cardgoal</option>
+              </select>
+            </label>
+            <label class="field"><span>项目状态：</span>
+              <select class="control">
+                <option>全部状态</option>
+                <option>进行中</option>
+                <option>草稿</option>
+                <option>已停用</option>
+                <option>已结束</option>
+              </select>
+            </label>
+            <label class="field"><span>项目编码：</span><input class="control" value="" placeholder="CSR-P0003" /></label>
+            <label class="field"><span>项目名称：</span><input class="control" value="" placeholder="Clean Water Program" /></label>
+            <button class="btn primary">查询</button>
+            <button class="btn">重置</button>
+          </div>
+
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <button class="btn primary" id="addProject">新增</button>
+            </div>
+            <div class="toolbar-right">
+              <span class="tip">查看、编辑、启用、停用请在对应数据的操作栏中执行。</span>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th class="radio-cell"></th>
+                <th style="width: 120px;">项目编码</th>
+                <th style="width: 180px;">项目名称</th>
+                <th style="width: 120px;">站点</th>
+                <th style="width: 130px;">展示终端</th>
+                <th style="width: 100px;">项目状态</th>
+                <th style="width: 170px;">当前阶段</th>
+                <th style="width: 150px;">阶段进度</th>
+                <th style="width: 150px;">贡献规则</th>
+                <th style="width: 120px;">虚拟用户</th>
+                <th style="width: 150px;">更新时间</th>
+                <th style="width: 210px;">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="radio-cell"><span class="radio active"></span></td>
+                <td>CSR-P0003</td>
+                <td>Clean Water Program</td>
+                <td>cardsoon</td>
+                <td>iOS / Android</td>
+                <td><span class="status active" id="status-CSR-P0003">进行中</span></td>
+                <td>Stage 03 · Lagos Well</td>
+                <td>
+                  <div class="progress"><span style="width:78%;"></span></div>
+                  <div class="progress-copy">3,900 / 5,000 · 78%</div>
+                </td>
+                <td>Gift Card 1%<br />VDC 1%<br />Bill 20 droplets</td>
+                <td><span class="status active">已启用</span></td>
+                <td>2026.07.08 10:30</td>
+                <td>
+                  <div class="actions">
+                    <button class="link" data-open="view" data-project="CSR-P0003">查看</button>
+                    <button class="link" data-open="edit" data-project="CSR-P0003">编辑</button>
+                    <button class="link danger" data-confirm="停用" data-project="CSR-P0003" data-target-status="已停用">停用</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="radio-cell"><span class="radio"></span></td>
+                <td>CSR-P0002</td>
+                <td>School Supplies Program</td>
+                <td>cardsoon</td>
+                <td>iOS / Android</td>
+                <td><span class="status disabled" id="status-CSR-P0002">已停用</span></td>
+                <td>Stage 02 · Kumasi School</td>
+                <td>
+                  <div class="progress"><span style="width:100%;"></span></div>
+                  <div class="progress-copy">5,000 / 5,000 · 100%</div>
+                </td>
+                <td>Gift Card 1%<br />VDC 1%</td>
+                <td><span class="status disabled">已停用</span></td>
+                <td>2026.06.28 18:12</td>
+                <td>
+                  <div class="actions">
+                    <button class="link" data-open="view" data-project="CSR-P0002">查看</button>
+                    <button class="link" data-open="edit" data-project="CSR-P0002">编辑</button>
+                    <button class="link success" data-confirm="启用" data-project="CSR-P0002" data-target-status="进行中">启用</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="radio-cell"><span class="radio"></span></td>
+                <td>CSR-P0004</td>
+                <td>Village Clinic Program</td>
+                <td>cardgoal</td>
+                <td>iOS / Android</td>
+                <td><span class="status draft" id="status-CSR-P0004">草稿</span></td>
+                <td>Stage 01 · Abuja Clinic</td>
+                <td>
+                  <div class="progress"><span style="width:0%;"></span></div>
+                  <div class="progress-copy">0 / 8,000 · 0%</div>
+                </td>
+                <td>Not configured</td>
+                <td><span class="status disabled">未启用</span></td>
+                <td>2026.07.07 16:45</td>
+                <td>
+                  <div class="actions">
+                    <button class="link" data-open="view" data-project="CSR-P0004">查看</button>
+                    <button class="link" data-open="edit" data-project="CSR-P0004">编辑</button>
+                    <button class="link success" data-confirm="启用" data-project="CSR-P0004" data-target-status="进行中">启用</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination">
+            <span>共 3 条</span>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">›</button>
+          </div>
+
+          <div class="note">
+            <strong>操作标注：</strong>
+            新增 = 打开“长期慈善游戏化项目配置”新增页；
+            查看 = 在对应行操作栏只读打开配置详情；
+            编辑 = 在对应行操作栏打开配置编辑页；
+            启用 = 二次确认后将草稿/停用项目置为可展示状态；
+            停用 = 二次确认后停止前台展示与自动贡献写入。
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-mask" id="confirmMask" aria-hidden="true">
+    <div class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="confirm-head">
+        <span id="confirmTitle">操作确认</span>
+        <button class="modal-close" id="closeConfirm" aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body">
+        <div id="confirmMessage">确认执行该操作？</div>
+      </div>
+      <div class="confirm-foot">
+        <button class="btn" id="cancelConfirm">取消</button>
+        <button class="btn primary" id="submitConfirm">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const configPage = "beeca-charity-backend-phase1-prototype.html";
+    const mask = document.getElementById("confirmMask");
+    const confirmTitle = document.getElementById("confirmTitle");
+    const confirmMessage = document.getElementById("confirmMessage");
+    const submitConfirm = document.getElementById("submitConfirm");
+    let pendingAction = null;
+
+    document.getElementById("addProject").addEventListener("click", () => {
+      window.location.href = `${configPage}?mode=add`;
+    });
+
+    document.querySelectorAll("[data-open]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const mode = button.dataset.open;
+        const project = button.dataset.project;
+        window.location.href = `${configPage}?mode=${mode}&project=${project}`;
+      });
+    });
+
+    document.querySelectorAll("[data-confirm]").forEach((button) => {
+      button.addEventListener("click", () => {
+        pendingAction = {
+          action: button.dataset.confirm,
+          project: button.dataset.project,
+          targetStatus: button.dataset.targetStatus
+        };
+        confirmTitle.textContent = `${pendingAction.action}确认`;
+        confirmMessage.innerHTML = `确认${pendingAction.action}项目 <strong>${pendingAction.project}</strong>？<br />确认后将同步影响前台展示状态与自动贡献规则。`;
+        submitConfirm.className = pendingAction.action === "停用" ? "btn danger" : "btn primary";
+        mask.classList.add("show");
+        mask.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    function closeConfirm() {
+      pendingAction = null;
+      mask.classList.remove("show");
+      mask.setAttribute("aria-hidden", "true");
+    }
+
+    document.getElementById("closeConfirm").addEventListener("click", closeConfirm);
+    document.getElementById("cancelConfirm").addEventListener("click", closeConfirm);
+    mask.addEventListener("click", (event) => {
+      if (event.target === mask) closeConfirm();
+    });
+
+    submitConfirm.addEventListener("click", () => {
+      if (!pendingAction) return;
+      const status = document.getElementById(`status-${pendingAction.project}`);
+      if (status) {
+        status.textContent = pendingAction.targetStatus;
+        status.className = pendingAction.targetStatus === "已停用" ? "status disabled" : "status active";
+      }
+      closeConfirm();
+    });
+  </script>
+</body>
+</html>
